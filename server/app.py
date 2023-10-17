@@ -36,5 +36,14 @@ def index():
     return '<h1>Project Server for Madi and Vanessa!!</h1>'
 
 
+class Providers(Resource):
+    def get(self):
+        return make_response(
+            [provider.to_dict() for provider in Provider.query.all()], 200)
+
+
+api.add_resource(Providers, "/providers")
+
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
