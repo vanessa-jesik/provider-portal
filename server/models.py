@@ -3,6 +3,7 @@ from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy import DateTime
 
 from config import db
 
@@ -27,7 +28,9 @@ class Provider(db.Model, SerializerMixin):
     patients = association_proxy("incidents", "patient")
 
     # add serialization rules
-    serialize_rules = ('-incidents.provider',)
+    serialize_rules = ('-patients', '-incidents')
+
+    # add validation??
 
     def __repr__(self):
         return f'<Provider {self.name}, {self.provider_type}, {self.badge_number}>'
@@ -48,35 +51,34 @@ class Patient(db.Model, SerializerMixin):
     providers = association_proxy("incidents", "provider")
 
     # add serialization rules
-    serialize_rules = ('-incidents.patient', )
+    serialize_rules = ('-incidents', 'providers')
+
+    # add validation??
 
     def __repr__(self):
         return f'<Patient {self.name}, {self.age}, {self.sex}, {self.address}>'
 
 
-class RestaurantPizza(db.Model, SerializerMixin):
-    __tablename__ = 'restaurant_pizzas'
+class Incident(db.Model, SerializerMixin):
+    __tablename__ = 'incidents'
 
     id = db.Column(db.Integer, primary_key=True)
-    price = db.Column(db.Integer, nullable=False)
-    pizza_id = db.Column(db.Integer, db.ForeignKey('pizzas.id'))
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
+    date_time = db.Column(db.DateTime)
+    description = db.Column(db.String)
+    location = db.Column(db.String)
+    provider_id = db.Column(db.Integer, db.ForeignKey('providers.id'))
+    patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'))
 
     # add relationships
-    pizza = db.relationship("Pizza", back_populates="restaurant_pizzas")
-    restaurant = db.relationship(
-        "Restaurant", back_populates="restaurant_pizzas")
+    provider = db.relationship("Provider", back_populates="incidents")
+    patient = db.relationship(
+        "Patient", back_populates="incidents")
 
     # add serialization rules
-    serialize_rules = ('-restaurant.restaurant_pizzas',
-                       '-pizza.restaurant_pizzas')
+    serialize_rules = ('-provider.incidents',
+                       '-patient.incidents')
 
-    # add validation
-    @validates('price')
-    def validate_price(self, key, price):
-        if not 1 <= price <= 30:
-            raise ValueError("Price must be between 1 and 30.")
-        return price
+    # add validation??
 
     def __repr__(self):
-        return f'<RestaurantPizza ${self.price}>'
+        return f'<Incident {self.date_time}, {self.description}, {self.location}>'
