@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function ProvidersList() {
-  const [providers, setProviders] = useState([]);
-
+function ProvidersList({ providers, setProviders }) {
   useEffect(() => {
     const fetchProviders = async () => {
       const response = await fetch("/providers");

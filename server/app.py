@@ -44,6 +44,20 @@ class Providers(Resource):
         except Exception as e:
             return make_response({"error": str(e)}, 500)
 
+    def post(self):
+        provider_json = request.get_json()
+        provider = Provider()
+
+        try:
+            for key in provider_json:
+                if hasattr(provider, key):
+                    setattr(provider, key, provider_json[key])
+            db.session.add(provider)
+            db.session.commit()
+            return make_response(provider.to_dict(), 201)
+        except ValueError:
+            return make_response({"errors": ["validation errors"]}, 400)
+
 
 api.add_resource(Providers, "/providers")
 
