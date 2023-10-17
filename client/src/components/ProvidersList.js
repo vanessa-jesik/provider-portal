@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
-function ProvidersList({ providers, setProviders }) {
+function ProvidersList({ providers, setProviders, onDelete }) {
   useEffect(() => {
     const fetchProviders = async () => {
       const response = await fetch("/providers");
@@ -15,9 +15,11 @@ function ProvidersList({ providers, setProviders }) {
       <h1>Providers</h1>
       <ul>
         {providers.map((provider) => (
-          <ul key={provider.id}>
+          <li key={provider.id}>
             {provider.name} {provider.provider_type} {provider.badge_number}
-          </ul>
+            <button>Edit</button>
+            <button onClick={() => onDelete(provider.id)}>Delete</button>
+          </li>
         ))}
       </ul>
     </div>

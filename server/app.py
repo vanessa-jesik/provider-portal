@@ -59,7 +59,43 @@ class Providers(Resource):
             return make_response({"errors": ["validation errors"]}, 400)
 
 
+class ProviderById(Resource):
+    def get(self, id):
+        provider = db.session.get(Provider, id)  # provider.query.get(id)
+        if provider:
+            return make_response(provider.to_dict(), 200)
+
+        return make_response({"error": "Provider not found"}, 404)
+
+    def patch(self, id):
+        provider = db.session.get(Provider, id)
+
+        if provider:
+            provider_json = request.get_json()
+            try:
+                for key in provider_json:
+                    if hasattr(provider, key):
+                        setattr(provider, key, provider_json[key])
+                db.session.commit()
+                return make_response(provider.to_dict(), 202)
+            except ValueError:
+                return make_response({"errors": ["validation errors"]}, 400)
+
+        return make_response({"error": "provider not found"}, 404)
+
+    def delete(self, id):
+        provider = db.session.get(Provider, id)
+
+        if provider:
+            db.session.delete(provider)
+            db.session.commit()
+            return "", 204
+
+        return make_response({"error": "provider not found"}, 404)
+
+
 api.add_resource(Providers, "/providers")
+api.add_resource(ProviderById, "/providers/<int:id>")
 
 
 if __name__ == '__main__':

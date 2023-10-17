@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ProvidersList from "./ProvidersList";
 import ProviderForm from "./ProviderForm";
 
@@ -9,6 +9,16 @@ function ProviderPage() {
     setProviders([...providers, newProvider]);
   };
 
+  function handleDeleteProvider(id) {
+    fetch(`/providers/${id}`, { method: "DELETE" }).then((r) => {
+      if (r.ok) {
+        setProviders((providers) =>
+          providers.filter((provider) => provider.id !== id)
+        );
+      }
+    });
+  }
+
   return (
     <div>
       <h1>Provider Portal</h1>
@@ -16,6 +26,7 @@ function ProviderPage() {
         providers={providers}
         setProviders={setProviders}
         handleNewProvider={handleNewProvider}
+        onDelete={handleDeleteProvider}
       />
       <ProviderForm handleNewProvider={handleNewProvider} />
     </div>
