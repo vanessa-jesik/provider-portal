@@ -4,16 +4,12 @@ function ProvidersList() {
   const [providers, setProviders] = useState([]);
 
   useEffect(() => {
-    const providerDB = "http://127.0.0.1:5555/providers";
-
-    fetch(providerDB)
-      .then((response) => response.json())
-      .then((data) => {
-        setProviders(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching providers:", error);
-      });
+    const fetchProviders = async () => {
+      const response = await fetch("/providers");
+      const provArr = await response.json();
+      setProviders(provArr);
+    };
+    fetchProviders().catch(console.error);
   }, []);
 
   return (
@@ -21,7 +17,9 @@ function ProvidersList() {
       <h1>Providers</h1>
       <ul>
         {providers.map((provider) => (
-          <li key={provider.id}>{provider.name}</li>
+          <ul key={provider.id}>
+            {provider.name} {provider.provider_type} {provider.badge_number}
+          </ul>
         ))}
       </ul>
     </div>

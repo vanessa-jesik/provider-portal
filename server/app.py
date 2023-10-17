@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
 # Standard library imports
+import os
 
 # Remote library imports
 from flask_migrate import Migrate
 from flask import Flask, request, make_response
 from flask_restful import Api, Resource
-import os
 
-# Local imports
-from config import app, db, api
+
 # Add your model imports
 
 from models import db, Provider, Patient, Incident
@@ -22,7 +21,7 @@ DATABASE = os.environ.get(
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.json.compact = False
+# app.json.compact = False
 
 migrate = Migrate(app, db)
 api = Api(app)
@@ -38,8 +37,12 @@ def index():
 
 class Providers(Resource):
     def get(self):
-        return make_response(
-            [provider.to_dict() for provider in Provider.query.all()], 200)
+        try:
+            providers = [provider.to_dict()
+                         for provider in Provider.query.all()]
+            return make_response(providers, 200)
+        except Exception as e:
+            return make_response({"error": str(e)}, 500)
 
 
 api.add_resource(Providers, "/providers")
