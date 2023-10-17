@@ -1,17 +1,19 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import ProviderPage from "./ProviderPage";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./Navbar.js";
+import ProviderPage from "./ProviderPage.js";
+import ProviderById from "./ProviderById.js";
 
 function App() {
   return (
     <div>
-      <h1>Project Client</h1>
+      <Navbar />
+      <h1>Project Client!!!</h1>
       <main>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/" component={ProviderPage} />
-          </Switch>
-        </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<ProviderPage />} />
+          <Route path="/providers/:id" element={<ProviderById />} />
+        </Routes>
       </main>
     </div>
   );
