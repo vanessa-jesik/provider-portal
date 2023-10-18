@@ -8,6 +8,7 @@ from flask import Flask, request, make_response
 from flask_restful import Api, Resource
 from flask_cors import CORS
 import os
+import datetime
 
 # Local imports
 from config import app, db, api
@@ -18,8 +19,7 @@ from models import db, Provider, Patient, Incident
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASE = os.environ.get(
-    "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
+DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE
@@ -43,8 +43,7 @@ def index():
 class Providers(Resource):
     def get(self):
         try:
-            providers = [provider.to_dict()
-                         for provider in Provider.query.all()]
+            providers = [provider.to_dict() for provider in Provider.query.all()]
             return make_response(providers, 200)
         except Exception as e:
             return make_response({"error": str(e)}, 500)
@@ -68,7 +67,10 @@ class ProviderById(Resource):
     def get(self, id):
         provider = db.session.get(Provider, id)
         if provider:
-            return make_response(provider.to_dict(), 200)
+            return make_response(
+                provider.to_dict(rules=("incidents", "-incidents.provider")),
+                200,
+            )
         return make_response({"error": "Provider not found"}, 404)
 
     def patch(self, id):
@@ -98,11 +100,35 @@ class ProviderById(Resource):
         return make_response({"error": "provider not found"}, 404)
 
 
-class Incidents(Resource):
+class Patients(Resource):
     def get(self):
-        return make_response(
-            [incident.to_dict() for incident in Incident.query.all()], 200
-        )
+        return make_response([patient.to_dict() for patient in Patient.query.all()])
+
+
+class Incidents(Resource):
+    def post(self):
+        incident_json = request.get_json()
+        date_time_str = incident_json["date_time"]
+        date_time = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S")
+        incident_json["date_time"] = date_time
+        incident = Incident()
+        try:
+            for key in incident_json:
+                if hasattr(incident, key):
+                    setattr(incident, key, incident_json[key])
+            db.session.add(incident)
+            db.session.commit()
+            return make_response(incident.to_dict(rules=("-provider",)), 201)
+        except ValueError as e:
+            return make_response("", 422)
+
+
+class IncidentById(Resource):
+    def patch(self, id):
+        pass
+
+    def delete(self, id):
+        pass
 
 
 class Patients(Resource):
@@ -114,8 +140,9 @@ class Patients(Resource):
 
 api.add_resource(Providers, "/providers")
 api.add_resource(ProviderById, "/providers/<int:id>")
-api.add_resource(Incidents, "/incidents")
 api.add_resource(Patients, "/patients")
+api.add_resource(Incidents, "/incidents")
+api.add_resource(IncidentById, "/incidents/<int:id>")
 
 
 if __name__ == "__main__":

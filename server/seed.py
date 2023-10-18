@@ -15,11 +15,11 @@ fake = Faker()
 
 def create_patients():
     patients = []
-    for _ in range(20):
+    for _ in range(15):
         p = Patient(
             name=fake.name(),
             age=randint(1, 115),
-            sex=fake.random_element(elements=('Male', 'Female')),
+            sex=fake.random_element(elements=("Male", "Female")),
             address=fake.address(),
         )
         patients.append(p)
@@ -32,7 +32,8 @@ def create_providers():
         p = Provider(
             name=fake.name(),
             provider_type=fake.random_element(
-                elements=('Paramedic', 'Fire Fighter', 'EMT', 'Nurse')),
+                elements=("Paramedic", "Fire Fighter", "EMT", "Nurse")
+            ),
             badge_number=randint(10000, 99999),
         )
         providers.append(p)
@@ -41,7 +42,7 @@ def create_providers():
 
 def create_incidents(patients, providers):
     incidents = []
-    for _ in range(10):
+    for _ in range(20):
         i = Incident(
             date_time=fake.date_time(),
             description=fake.sentence(nb_words=10),
@@ -53,7 +54,7 @@ def create_incidents(patients, providers):
     return incidents
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with app.app_context():
         print("Clearing db...")
         Patient.query.delete()

@@ -1,46 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useFormik } from "formik";
+import IncidentForm from "./IncidentForm.js";
 
 function ProviderById() {
   const [provider, setProvider] = useState();
-  const [incidents, setIncidents] = useState([]);
+  const [refreshPage, setRefreshPage] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
     fetch(`http://localhost:5555/providers/${id}`)
       .then(r => r.json())
-      .then(provider => setProvider(provider), console.log(provider))
+      .then(provider => setProvider(provider))
       .catch(error => {
         console.error("Error fetching provider", error);
       });
-  }, []);
+  }, [refreshPage]);
 
-  useEffect(() => {
-    fetch("http://localhost:5555/incidents")
-      .then(r => r.json())
-      .then(incidents => setIncidents(incidents))
-      .catch(error => {
-        console.error("Error fetching incidents:", error);
-      });
-  }, []);
-
-  const incidentsToDisplay = incidents.filter(
-    incident => id == incident.provider_id
-  );
-  console.log(provider);
-  console.log(incidents);
-  console.log(incidentsToDisplay);
   return (
     <div>
-      <h2>Selected Provider:</h2>
       {provider ? (
-        <>
-          <h3>{provider.name}</h3>
-          <p>{provider.provider_type}</p>
-          <p>{provider.badge_number}</p>
-        </>
-      ) : null}
+        <div>
+          <div>
+            <h2>Selected Provider:</h2>
+            <h3>{provider.name}</h3>
+            <p>{provider.provider_type}</p>
+            <p>Badge Number: {provider.badge_number}</p>
+          </div>
+          <h2>Related Incidents:</h2>
+          {provider ? (
+            provider.incidents.length === 0 ? (
+              <p>No incidents recorded for this provider.</p>
+            ) : null
+          ) : null}
+          <div>
+            {provider.incidents.map(incident => (
+              <div key={incident.id}>
+                <p>Incident:</p>
+                <p>{incident.date_time}</p>
+                <p>Location: {incident.location}</p>
+                <p>Description: {incident.description}</p>
+                <p>Patient:</p>
+                <p>Name: {incident.patient.name}</p>
+                <p>
+                  Age: {incident.patient.age} Sex: {incident.patient.sex}
+                </p>
+                <p>Address: {incident.patient.address}</p>
+                <button>Edit Incident</button>
+                <button onClick={console.log(provider.incidents.id)}>
+                  Delete Incident
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <h1>Loading...</h1>
+      )}
+      <h1>Add a new incident for this provider:</h1>
+      <IncidentForm
+        provider_id={id}
+        refreshPage={refreshPage}
+        setRefreshPage={setRefreshPage}
+      />
     </div>
   );
 }
