@@ -8,6 +8,7 @@ from flask import Flask, request, make_response
 from flask_restful import Api, Resource
 from flask_cors import CORS
 import os
+import datetime
 
 # Local imports
 from config import app, db, api
@@ -66,7 +67,10 @@ class ProviderById(Resource):
     def get(self, id):
         provider = db.session.get(Provider, id)
         if provider:
-            return make_response(provider.to_dict(), 200)
+            return make_response(
+                provider.to_dict(rules=("incidents", "-incidents.provider")),
+                200,
+            )
         return make_response({"error": "Provider not found"}, 404)
 
     def patch(self, id):
@@ -97,10 +101,21 @@ class ProviderById(Resource):
 
 
 class Incidents(Resource):
-    def get(self):
-        return make_response(
-            [incident.to_dict() for incident in Incident.query.all()], 200
-        )
+    def post(self):
+        incident_json = request.get_json()
+        date_time_str = incident_json["date_time"]
+        date_time = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S")
+        incident_json["date_time"] = date_time
+        incident = Incident()
+        try:
+            for key in incident_json:
+                if hasattr(incident, key):
+                    setattr(incident, key, incident_json[key])
+            db.session.add(incident)
+            db.session.commit()
+            return make_response(incident.to_dict(rules=("-provider",)), 201)
+        except ValueError as e:
+            return make_response("", 422)
 
 
 api.add_resource(Providers, "/providers")
