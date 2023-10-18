@@ -14,6 +14,10 @@ function PatientPage() {
     fetchPatients().catch(console.error);
   }, []);
 
+  const handleNewPatient = (newPatient) => {
+    setPatients([...patients, newPatient]);
+  };
+
   let patientCards = patients.map((patient) => (
     <PatientCard key={patient.id} patient={patient} />
   ));
@@ -27,7 +31,7 @@ function PatientPage() {
         <h1 className="text-2xl font-semibold mb-4">Patients</h1>
         <div className="providerList">{patientCards}</div>
       </Suspense>
-      <PatientForm />
+      <PatientForm handleNewPatient={handleNewPatient} />
     </div>
   );
 }
