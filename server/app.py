@@ -100,6 +100,11 @@ class ProviderById(Resource):
         return make_response({"error": "provider not found"}, 404)
 
 
+class Patients(Resource):
+    def get(self):
+        return make_response([patient.to_dict() for patient in Patient.query.all()])
+
+
 class Incidents(Resource):
     def post(self):
         incident_json = request.get_json()
@@ -118,9 +123,19 @@ class Incidents(Resource):
             return make_response("", 422)
 
 
+class IncidentById(Resource):
+    def patch(self, id):
+        pass
+
+    def delete(self, id):
+        pass
+
+
 api.add_resource(Providers, "/providers")
 api.add_resource(ProviderById, "/providers/<int:id>")
+api.add_resource(Patients, "/patients")
 api.add_resource(Incidents, "/incidents")
+api.add_resource(IncidentById, "/incidents/<int:id>")
 
 
 if __name__ == "__main__":

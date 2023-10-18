@@ -27,24 +27,36 @@ function ProviderById() {
             <p>Badge Number: {provider.badge_number}</p>
           </div>
           <h2>Related Incidents:</h2>
-          {provider.incidents.map(incident => (
-            <div key={incident.id}>
-              <p>Incident:</p>
-              <p>{incident.date_time}</p>
-              <p>Location: {incident.location}</p>
-              <p>Description: {incident.description}</p>
-              <p>Patient:</p>
-              <p>Name: {incident.patient.name}</p>
-              <p>
-                Age: {incident.patient.age} Sex: {incident.patient.sex}
-              </p>
-              <p>Address: {incident.patient.address}</p>
-            </div>
-          ))}
+          {provider ? (
+            provider.incidents.length === 0 ? (
+              <p>No incidents recorded for this provider.</p>
+            ) : null
+          ) : null}
+          <div>
+            {provider.incidents.map(incident => (
+              <div key={incident.id}>
+                <p>Incident:</p>
+                <p>{incident.date_time}</p>
+                <p>Location: {incident.location}</p>
+                <p>Description: {incident.description}</p>
+                <p>Patient:</p>
+                <p>Name: {incident.patient.name}</p>
+                <p>
+                  Age: {incident.patient.age} Sex: {incident.patient.sex}
+                </p>
+                <p>Address: {incident.patient.address}</p>
+                <button>Edit Incident</button>
+                <button onClick={console.log(provider.incidents.id)}>
+                  Delete Incident
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <h1>Loading...</h1>
       )}
+      <h1>Add a new incident for this provider:</h1>
       <IncidentForm
         provider_id={id}
         refreshPage={refreshPage}
