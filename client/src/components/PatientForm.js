@@ -39,47 +39,43 @@ const MySelect = ({ label, ...props }) => {
   );
 };
 
-const ProviderForm = ({ handleNewProvider }) => {
+const PatientForm = ({ handleNewPatient }) => {
   const handleSubmit = (values) => {
-    const newProvider = {
+    const newPatient = {
       name: values.name,
-      badge_number: values.badge_number,
-      provider_type: values.provider_type,
+      age: values.age,
+      sex: values.sex,
+      address: values.address,
     };
 
-    fetch("/providers", {
+    fetch("/patients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newProvider),
+      body: JSON.stringify(newPatient),
     })
       .then((r) => r.json())
-      .then((providers) => {
-        handleNewProvider(providers);
+      .then((patients) => {
+        handleNewPatient(patients);
       });
   };
 
   return (
     <div className="p-4 border rounded-lg shadow-md bg-white">
-      <h1 className="text-2xl font-semibold mb-4">Add a New Provider</h1>
+      <h1 className="text-2xl font-semibold mb-4">Add a New Patient</h1>
       <Formik
         initialValues={{
           name: "",
-          badge_number: "",
-          provider_type: "",
+          age: "",
+          sex: "",
+          address: "",
         }}
         validationSchema={Yup.object({
           name: Yup.string()
             .max(25, "Must be 25 characters or less")
             .required("Required"),
-          badge_number: Yup.number()
-            .typeError("Must be a number")
-            .required("Required"),
-          provider_type: Yup.string()
-            .oneOf(
-              ["EMT", "Paramedic", "Fire Fighter", "Nurse", "Other"],
-              "Invalid Provider Type"
-            )
-            .required("Required"),
+          age: Yup.number().typeError("Must be a number").required("Required"),
+          sex: Yup.string().required("Required"),
+          address: Yup.string().required("Required"),
         })}
         onSubmit={(values, { setSubmitting }) => {
           handleSubmit(values);
@@ -97,20 +93,22 @@ const ProviderForm = ({ handleNewProvider }) => {
             // placeholder="Name..."
           />
           <MyTextInput
-            label="Badge Number"
-            name="badge_number"
+            label="Age"
+            name="age"
             type="text"
-            // placeholder="12345"
+            // placeholder="25"
           />
-
-          <MySelect label="Provider Type" name="provider_type">
-            <option value="">Select a provider type</option>
-            <option value="EMT">EMT</option>
-            <option value="Paramedic">Paramedic</option>
-            <option value="Fire Fighter">Fire Fighter</option>
-            <option value="Nurse">Nurse</option>
-            <option value="Other">Other</option>
+          <MySelect label="Sex" name="sex">
+            <option value="">Select a sex</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
           </MySelect>
+          <MyTextInput
+            label="Address"
+            name="address"
+            type="text"
+            // placeholder="123 Main St"
+          />
 
           <button
             type="submit"
@@ -124,4 +122,4 @@ const ProviderForm = ({ handleNewProvider }) => {
   );
 };
 
-export default ProviderForm;
+export default PatientForm;

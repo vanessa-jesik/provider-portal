@@ -131,6 +131,13 @@ class IncidentById(Resource):
         pass
 
 
+class Patients(Resource):
+    def get(self):
+        return make_response(
+            [patient.to_dict() for patient in Patient.query.all()], 200
+        )
+
+
 api.add_resource(Providers, "/providers")
 api.add_resource(ProviderById, "/providers/<int:id>")
 api.add_resource(Patients, "/patients")
