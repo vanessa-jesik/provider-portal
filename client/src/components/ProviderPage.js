@@ -18,6 +18,15 @@ function ProviderPage() {
     setProviders([...providers, newProvider]);
   };
 
+  const handleUpdateProvider = (editedProvider) => {
+    // Find and update the provider in the providers list
+    setProviders((prevProviders) =>
+      prevProviders.map((provider) =>
+        provider.id === editedProvider.id ? editedProvider : provider
+      )
+    );
+  };
+
   function handleDeleteProvider(id) {
     fetch(`/providers/${id}`, { method: "DELETE" }).then((r) => {
       if (r.ok) {
@@ -32,7 +41,9 @@ function ProviderPage() {
     <ProviderCard
       key={provider.id}
       provider={provider}
+      onUpdate={handleUpdateProvider}
       onDelete={handleDeleteProvider}
+      handleNewProvider={handleNewProvider}
     />
   ));
 

@@ -91,13 +91,13 @@ const ProviderForm = ({ handleNewProvider }) => {
       >
         <Form>
           <MyTextInput
-            label="Name:"
+            label="Name"
             name="name"
             type="text"
             // placeholder="Name..."
           />
           <MyTextInput
-            label="Badge Number:"
+            label="Badge Number"
             name="badge_number"
             type="text"
             // placeholder="12345"
