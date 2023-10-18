@@ -4,6 +4,7 @@ import IncidentForm from "./IncidentForm.js";
 
 function ProviderById() {
   const [provider, setProvider] = useState();
+  const [refreshPage, setRefreshPage] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -13,8 +14,7 @@ function ProviderById() {
       .catch(error => {
         console.error("Error fetching provider", error);
       });
-  }, []);
-  console.log(provider);
+  }, [refreshPage]);
 
   return (
     <div>
@@ -45,7 +45,11 @@ function ProviderById() {
       ) : (
         <h1>Loading...</h1>
       )}
-      <IncidentForm provider_id={id} />
+      <IncidentForm
+        provider_id={id}
+        refreshPage={refreshPage}
+        setRefreshPage={setRefreshPage}
+      />
     </div>
   );
 }
