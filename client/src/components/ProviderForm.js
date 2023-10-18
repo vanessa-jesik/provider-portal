@@ -3,37 +3,44 @@ import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
 
 const MyTextInput = ({ label, ...props }) => {
-  // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
-  // which we can spread on <input>. We can use field meta to show an error
-  // message if the field is invalid and it has been touched (i.e. visited)
   const [field, meta] = useField(props);
   return (
-    <>
-      <label htmlFor={props.id || props.name}>{label}</label>
-      <input className="text-input" {...field} {...props} />
+    <div className="mb-4">
+      <label htmlFor={props.id || props.name} className="block text-gray-600">
+        {label}
+      </label>
+      <input
+        className="text-input bg-gray-100 border-gray-300 focus:border-blurple-500"
+        {...field}
+        {...props}
+        placeholder={props.placeholder}
+      />
       {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
+        <div className="text-red-500 text-sm mt-1">{meta.error}</div>
       ) : null}
-    </>
+    </div>
   );
 };
 
 const MySelect = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   return (
-    <div>
-      <label htmlFor={props.id || props.name}>{label}</label>
-      <select {...field} {...props} />
+    <div className="mb-4">
+      <label htmlFor={props.id || props.name} className="block text-gray-600">
+        {label}
+      </label>
+      <select className="text-input" {...field} {...props}>
+        {props.children}
+      </select>
       {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
+        <div className="text-red-500 text-sm mt-1">{meta.error}</div>
       ) : null}
     </div>
   );
 };
 
-// And now we can use these
 const ProviderForm = ({ handleNewProvider }) => {
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     const newProvider = {
       name: values.name,
       badge_number: values.badge_number,
@@ -45,20 +52,20 @@ const ProviderForm = ({ handleNewProvider }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newProvider),
     })
-      .then(r => r.json())
-      .then(providers => {
+      .then((r) => r.json())
+      .then((providers) => {
         handleNewProvider(providers);
       });
   };
 
   return (
-    <>
-      <h1>Add a New Provider</h1>
+    <div className="p-4 border rounded-lg shadow-md bg-white">
+      <h1 className="text-2xl font-semibold mb-4">Add a New Provider</h1>
       <Formik
         initialValues={{
           name: "",
           badge_number: "",
-          provider_type: "", // added for our select
+          provider_type: "",
         }}
         validationSchema={Yup.object({
           name: Yup.string()
@@ -84,17 +91,16 @@ const ProviderForm = ({ handleNewProvider }) => {
       >
         <Form>
           <MyTextInput
-            label="Name"
+            label="Name:"
             name="name"
             type="text"
-            placeholder="Name..."
+            // placeholder="Name..."
           />
-
           <MyTextInput
-            label="Badge Number"
+            label="Badge Number:"
             name="badge_number"
             type="text"
-            placeholder="12345"
+            // placeholder="12345"
           />
 
           <MySelect label="Provider Type" name="provider_type">
@@ -106,10 +112,15 @@ const ProviderForm = ({ handleNewProvider }) => {
             <option value="Other">Other</option>
           </MySelect>
 
-          <button type="submit">Submit</button>
+          <button
+            type="submit"
+            className="bg-blurple-500 text-white py-2 px-4 rounded-lg hover:bg-blurple-700"
+          >
+            Submit
+          </button>
         </Form>
       </Formik>
-    </>
+    </div>
   );
 };
 
