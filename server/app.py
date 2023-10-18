@@ -18,7 +18,8 @@ from models import db, Provider, Patient, Incident
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
+DATABASE = os.environ.get(
+    "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE
@@ -42,7 +43,8 @@ def index():
 class Providers(Resource):
     def get(self):
         try:
-            providers = [provider.to_dict() for provider in Provider.query.all()]
+            providers = [provider.to_dict()
+                         for provider in Provider.query.all()]
             return make_response(providers, 200)
         except Exception as e:
             return make_response({"error": str(e)}, 500)
@@ -103,9 +105,17 @@ class Incidents(Resource):
         )
 
 
+class Patients(Resource):
+    def get(self):
+        return make_response(
+            [patient.to_dict() for patient in Patient.query.all()], 200
+        )
+
+
 api.add_resource(Providers, "/providers")
 api.add_resource(ProviderById, "/providers/<int:id>")
 api.add_resource(Incidents, "/incidents")
+api.add_resource(Patients, "/patients")
 
 
 if __name__ == "__main__":
