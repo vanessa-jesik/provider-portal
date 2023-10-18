@@ -1,5 +1,6 @@
 import React, { Suspense, useState, useEffect } from "react";
 import PatientCard from "./PatientCard";
+import PatientForm from "./PatientForm";
 
 function PatientPage() {
   const [patients, setPatients] = useState([]);
@@ -26,6 +27,7 @@ function PatientPage() {
         <h1 className="text-2xl font-semibold mb-4">Patients</h1>
         <div className="providerList">{patientCards}</div>
       </Suspense>
+      <PatientForm />
     </div>
   );
 }
