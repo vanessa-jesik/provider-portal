@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 function UpdateIncidentForm({
   incident,
@@ -10,8 +11,9 @@ function UpdateIncidentForm({
 }) {
   const { id, date_time, description, location, provider_id, patient_id } =
     incident;
+
   const initialValues = {
-    date_time,
+    date_time: "",
     description,
     location,
     provider_id,
@@ -61,12 +63,12 @@ function UpdateIncidentForm({
             Incident date and time:
           </label>
           <br />
-          <input
+          <DateTimePicker
             id="date_time"
             name="date_time"
-            onChange={formik.handleChange}
+            format="YYYY-MM-DD HH:mm:ss"
+            onChange={date => formik.setFieldValue("date_time", date)}
             value={formik.values.date_time}
-            className="border border-gray-300 p-2 mb-2 w-full rounded-md focus:outline-air"
           />
           <p className="text-fire-light"> {formik.errors.date_time}</p>
         </div>

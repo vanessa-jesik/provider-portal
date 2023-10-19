@@ -15,28 +15,28 @@ function IncidentCard({
       <p className="text-lg font-bold px-4 pb-2">Incident:</p>
       <p>{date_time}</p>
       <p>
-        <span class="font-bold">Location: </span>
+        <span className="font-bold">Location: </span>
         {location}
       </p>
       <p>
-        <span class="font-bold">Description: </span>
+        <span className="font-bold">Description: </span>
         {description}
       </p>
       <div className="p-4">
         <p>
-          <span class="font-bold pl-4">Patient:</span>
+          <span className="font-bold pl-4">Patient:</span>
         </p>
         <p>
-          <span class="font-semibold">Name: </span>
+          <span className="font-semibold">Name: </span>
           {patient.name}
         </p>
         <p>
-          <span class="font-semibold ">Age: </span>
-          {patient.age} <span class="font-semibold ml-6">Sex: </span>
+          <span className="font-semibold ">Age: </span>
+          {patient.age} <span className="font-semibold ml-6">Sex: </span>
           {patient.sex}
         </p>
         <p>
-          <span class="font-semibold ">Address: </span>
+          <span className="font-semibold ">Address: </span>
           {patient.address}
         </p>
       </div>
