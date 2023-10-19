@@ -80,7 +80,7 @@ const ProviderForm = ({
       });
   };
 
-  const postProvider = (values) => {
+  const postProvider = (values, formikBag) => {
     const newProvider = {
       name: values.name,
       badge_number: values.badge_number,
@@ -96,14 +96,15 @@ const ProviderForm = ({
       .then((providers) => {
         handleNewProvider(providers);
         console.log("New provider ran");
+        formikBag.resetForm();
       });
   };
 
-  const handleSubmit = (values) => {
+  const handleSubmit = (values, formikBag) => {
     if (isEditing) {
       updateProvider(values);
     } else {
-      postProvider(values);
+      postProvider(values, formikBag);
     }
   };
 
