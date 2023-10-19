@@ -4,6 +4,7 @@ import ProviderForm from "./ProviderForm";
 
 function ProviderPage() {
   const [providers, setProviders] = useState([]);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -36,7 +37,7 @@ function ProviderPage() {
     });
   }
 
-  let providerCards = providers.map((provider) => (
+  let providerCards = providers.map((provider, index) => (
     <ProviderCard
       key={provider.id}
       provider={provider}
@@ -47,6 +48,10 @@ function ProviderPage() {
     />
   ));
 
+  const toggleForm = () => {
+    setIsFormOpen(!isFormOpen);
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-semibold text-center py-4 bg-blurple-500 text-white">
@@ -54,15 +59,28 @@ function ProviderPage() {
       </h1>
       <Suspense>
         <h1 className="text-2xl font-semibold mb-4">Providers</h1>
-        <div className="providerList">{providerCards}</div>
+        <button
+          onClick={toggleForm}
+          className="bg-papaya-dark text-white py-2 px-4 rounded-lg mt-4 hover:bg-papaya"
+        >
+          {isFormOpen ? "Close Form" : "Add a New Provider"}
+        </button>
+        {isFormOpen && (
+          <ProviderForm
+            key={providers.id}
+            providers={providers}
+            initialValues={{}}
+            handleNewProvider={handleNewProvider}
+            handleUpdateProvider={handleUpdateProvider}
+            toggleForm={toggleForm}
+          />
+        )}
+        <div className="providerList">
+          <div className="grid grid-cols-3 gap-4 bg-gray-50">
+            {providerCards}
+          </div>
+        </div>
       </Suspense>
-      <ProviderForm
-        key={providers.id}
-        providers={providers}
-        initialValues={{}}
-        handleNewProvider={handleNewProvider}
-        handleUpdateProvider={handleUpdateProvider}
-      />
     </div>
   );
 }

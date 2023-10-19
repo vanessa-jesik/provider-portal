@@ -45,6 +45,7 @@ const ProviderForm = ({
   isEditing,
   provider,
   toggleEdit,
+  toggleForm,
 }) => {
   const initialValues = isEditing
     ? {
@@ -105,8 +106,11 @@ const ProviderForm = ({
     if (isEditing) {
       updateProvider(values);
       toggleEdit();
+      alert("Provider has been updated.");
     } else {
       postProvider(values, formikBag);
+      toggleForm();
+      alert("Provider has been added.");
     }
   };
 
@@ -149,7 +153,7 @@ const ProviderForm = ({
           </MySelect>
           <button
             type="submit"
-            className="bg-blurple-500 text-white py-2 px-4 rounded-lg hover:bg-blurple-700"
+            className="bg-papaya-dark text-white py-2 px-4 rounded-lg hover:bg-papaya"
           >
             Submit
           </button>
