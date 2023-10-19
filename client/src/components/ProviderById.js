@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import IncidentForm from "./IncidentForm.js";
+import AddIncidentForm from "./AddIncidentForm.js";
 
 function ProviderById() {
   const [provider, setProvider] = useState();
-  const [refreshPage, setRefreshPage] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -14,7 +13,27 @@ function ProviderById() {
       .catch(error => {
         console.error("Error fetching provider", error);
       });
-  }, [refreshPage]);
+  }, []);
+
+  function handleSubmitNewIncident(newIncident) {
+    const updatedIncidents = provider.incidents.concat(newIncident);
+    const updatedProvider = { ...provider, incidents: updatedIncidents };
+    setProvider(updatedProvider);
+  }
+
+  function handleDeleteIncident(incident_id) {
+    fetch(`http://localhost:5555/incidents/${incident_id}`, {
+      method: "DELETE",
+    }).then(r => {
+      if (r.ok) {
+        const updatedIncidents = provider.incidents.filter(
+          incident => incident.id !== incident_id
+        );
+        const updatedProvider = { ...provider, incidents: updatedIncidents };
+        setProvider(updatedProvider);
+      }
+    });
+  }
 
   return (
     <div>
@@ -46,7 +65,7 @@ function ProviderById() {
                 </p>
                 <p>Address: {incident.patient.address}</p>
                 <button>Edit Incident</button>
-                <button onClick={console.log(provider.incidents.id)}>
+                <button onClick={() => handleDeleteIncident(incident.id)}>
                   Delete Incident
                 </button>
               </div>
@@ -57,10 +76,9 @@ function ProviderById() {
         <h1>Loading...</h1>
       )}
       <h1>Add a new incident for this provider:</h1>
-      <IncidentForm
+      <AddIncidentForm
         provider_id={id}
-        refreshPage={refreshPage}
-        setRefreshPage={setRefreshPage}
+        handleSubmitNewIncident={handleSubmitNewIncident}
       />
     </div>
   );

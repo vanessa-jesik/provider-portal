@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-function IncidentForm({ provider_id, refreshPage, setRefreshPage }) {
+function AddIncidentForm({ provider_id, handleSubmitNewIncident }) {
   const [patients, setPatients] = useState([]);
 
   useEffect(() => {
@@ -34,14 +34,24 @@ function IncidentForm({ provider_id, refreshPage, setRefreshPage }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(values, null, 2),
-    }).then(res => {
-      if (res.status == 201) {
-        setRefreshPage(!refreshPage);
+    })
+      .then(r => {
+        if (r.status === 201) {
+          return r.json();
+        } else {
+          throw new Error("Failed to create incident");
+        }
+      })
+      .then(newIncident => {
+        handleSubmitNewIncident(newIncident);
         formikBag.resetForm();
-      }
-    });
+      })
+      .catch(error => {
+        console.error("Error creating incident", error);
+      });
   };
 
   const formik = useFormik({ initialValues, validationSchema, onSubmit });
@@ -102,4 +112,4 @@ function IncidentForm({ provider_id, refreshPage, setRefreshPage }) {
   );
 }
 
-export default IncidentForm;
+export default AddIncidentForm;

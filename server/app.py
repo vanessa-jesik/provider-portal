@@ -128,7 +128,12 @@ class IncidentById(Resource):
         pass
 
     def delete(self, id):
-        pass
+        incident = db.session.get(Incident, id)
+        if incident:
+            db.session.delete(incident)
+            db.session.commit()
+            return make_response("", 204)
+        return make_response({"error": "Incident not found"}, 404)
 
 
 class Patients(Resource):
