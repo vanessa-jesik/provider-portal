@@ -54,6 +54,7 @@ function ProviderCard({
         <div>
           <ProviderForm
             initialValues={editedProvider}
+            isEditing={isEditing}
             handleNewProvider={handleNewProvider}
             handleUpdateProvider={handleUpdateProvider}
           />
