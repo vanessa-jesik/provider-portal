@@ -49,18 +49,18 @@ function ProviderCard({
           Delete
         </button>
       </span>
-
-      {isEditing && (
+      {isEditing && editedProvider ? (
         <div>
           <ProviderForm
             initialValues={editedProvider}
             isEditing={isEditing}
             handleNewProvider={handleNewProvider}
             handleUpdateProvider={handleUpdateProvider}
+            provider={editedProvider}
           />
           <button onClick={handleCancelEdit}>Cancel</button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

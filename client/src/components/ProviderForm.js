@@ -44,8 +44,20 @@ const ProviderForm = ({
   handleUpdateProvider,
   isEditing,
   provider,
-  initialValues,
 }) => {
+  const initialValues = isEditing
+    ? {
+        name: provider.name,
+        badge_number: provider.badge_number,
+        provider_type: provider.provider_type,
+      }
+    : {
+        name: "",
+        badge_number: "",
+        provider_type: "",
+      };
+
+  console.log("Initial Values:", initialValues);
   const updateProvider = (values) => {
     const updatedProvider = { ...provider, ...values };
     fetch(`/providers/${provider.id}`, {

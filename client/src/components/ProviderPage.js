@@ -57,8 +57,9 @@ function ProviderPage() {
         <div className="providerList">{providerCards}</div>
       </Suspense>
       <ProviderForm
-        onUpdate={handleUpdateProvider}
-        onDelete={handleDeleteProvider}
+        key={providers.id}
+        providers={providers}
+        initialValues={{}}
         handleNewProvider={handleNewProvider}
         handleUpdateProvider={handleUpdateProvider}
       />
