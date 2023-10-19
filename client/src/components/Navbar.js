@@ -26,6 +26,9 @@ function Navbar() {
         <NavLink className="text-white hover:underline">
           DOCUMENT INCIDENT
         </NavLink>
+        <NavLink to="/patients" className="text-white hover:underline">
+          PATIENTS
+        </NavLink>
         <NavLink className="text-white hover:underline">SEARCH</NavLink>
       </div>
       <img src={images["EMS.jpeg"]} alt="EMS image" className="h-16" />
