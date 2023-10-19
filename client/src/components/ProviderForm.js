@@ -120,8 +120,11 @@ const ProviderForm = ({
           name: Yup.string()
             .max(25, "Must be 25 characters or less")
             .required("Required"),
-          badge_number: Yup.number()
-            .typeError("Must be a number")
+          badge_number: Yup.string()
+            .matches(
+              /^\d{5}$/,
+              "Badge number must be exactly 5 digits. (Example: 12345)"
+            )
             .required("Required"),
           provider_type: Yup.string()
             .oneOf(
