@@ -1,6 +1,5 @@
 import React, { Suspense, useState, useEffect } from "react";
 import PatientCard from "./PatientCard";
-import PatientForm from "./PatientForm";
 
 function PatientPage() {
   const [patients, setPatients] = useState([]);
@@ -14,9 +13,19 @@ function PatientPage() {
     fetchPatients().catch(console.error);
   }, []);
 
-  const handleNewPatient = (newPatient) => {
-    setPatients([...patients, newPatient]);
-  };
+  // const handleNewPatient = (newPatient) => {
+  //   setPatients([...patients, newPatient]);
+  // };
+
+  // function handleDeletePatient(id) {
+  //   fetch(`/patients/${id}`, { method: "DELETE" }).then((r) => {
+  //     if (r.ok) {
+  //       setpatients((patients) =>
+  //         patients.filter((patient) => patient.id !== id)
+  //       );
+  //     }
+  //   });
+  // }
 
   let patientCards = patients.map((patient) => (
     <PatientCard key={patient.id} patient={patient} />
@@ -24,14 +33,14 @@ function PatientPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold text-center py-4 bg-blurple-500 text-white">
+      <h1 className="text-3xl font-semibold text-center py-4 bg-prussian-dark text-white">
         Patients
       </h1>
       <Suspense>
-        <h1 className="text-2xl font-semibold mb-4">Patients</h1>
-        <div className="providerList">{patientCards}</div>
+        <div className="grid grid-cols-3 gap-4 bg-gray-50 mt-4">
+          {patientCards}
+        </div>
       </Suspense>
-      <PatientForm handleNewPatient={handleNewPatient} />
     </div>
   );
 }

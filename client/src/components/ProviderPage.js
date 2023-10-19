@@ -54,27 +54,28 @@ function ProviderPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold text-center py-4 bg-blurple-500 text-white">
-        Provider Portal
+      <h1 className="text-3xl font-semibold text-center py-4 bg-prussian-dark text-white">
+        Providers
       </h1>
       <Suspense>
-        <h1 className="text-2xl font-semibold mb-4">Providers</h1>
-        <button
-          onClick={toggleForm}
-          className="bg-papaya-dark text-white py-2 px-4 rounded-lg mt-4 hover:bg-papaya"
-        >
-          {isFormOpen ? "Close Form" : "Add a New Provider"}
-        </button>
-        {isFormOpen && (
-          <ProviderForm
-            key={providers.id}
-            providers={providers}
-            initialValues={{}}
-            handleNewProvider={handleNewProvider}
-            handleUpdateProvider={handleUpdateProvider}
-            toggleForm={toggleForm}
-          />
-        )}
+        <div className="text-center">
+          <button
+            onClick={toggleForm}
+            className="bg-papaya-dark text-white py-2 px-4 rounded-lg mt-4 mb-4 hover:bg-papaya"
+          >
+            {isFormOpen ? "Close Form" : "Add a New Provider"}
+          </button>
+          {isFormOpen && (
+            <ProviderForm
+              key={providers.id}
+              providers={providers}
+              initialValues={{}}
+              handleNewProvider={handleNewProvider}
+              handleUpdateProvider={handleUpdateProvider}
+              toggleForm={toggleForm}
+            />
+          )}
+        </div>
         <div className="providerList">
           <div className="grid grid-cols-3 gap-4 bg-gray-50">
             {providerCards}

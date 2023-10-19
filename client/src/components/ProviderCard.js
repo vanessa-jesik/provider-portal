@@ -23,32 +23,32 @@ function ProviderCard({
 
   return (
     <div className="bg-white rounded-lg p-4 shadow-md">
-      <h3 className="text-xl font-semibold text-fire-dark mb-2">{name}</h3>
+      <h3 className="text-xl font-semibold mb-2">{name}</h3>
       <p className="text-prussian-dark mb-2">
         {provider_type}, #{badge_number}
       </p>
       <span className="mt-2">
         <Link
           to={`/providers/${id}`}
-          className="bg-prussian-light text-white py-2 px-4 rounded-lg hover:bg-air-dark"
+          className="bg-prussian-light text-white py-2 px-4 mr-2 rounded-lg hover:bg-air-dark"
         >
           View Provider
         </Link>
         <button
           onClick={handleToggleEdit}
-          className="bg-air-dark text-white py-2 px-4 rounded-lg mr-2 hover:bg-air-light"
+          className="bg-air-dark text-white py-1.5 px-4 rounded-lg mr-2 hover:bg-air-light"
         >
           {isEditing ? "Hide Edit" : "Edit"}
         </button>
         <button
           onClick={() => onDelete(id)}
-          className="bg-barn-light text-white py-2 px-4 rounded-lg hover:bg-barn-dark"
+          className="bg-barn-light text-white py-1.5 px-4 rounded-lg hover:bg-barn-dark"
         >
           Delete
         </button>
       </span>
       {isEditing && editedProvider ? (
-        <div>
+        <div className="text-center">
           <ProviderForm
             initialValues={editedProvider}
             isEditing={isEditing}
