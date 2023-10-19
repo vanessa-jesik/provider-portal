@@ -10,17 +10,14 @@ function PatientCard({ patient: { id, name, age, sex, address }, onDelete }) {
       </p>
       <Link
         to={`/patients/${id}`}
-        className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+        className="bg-prussian-light text-white py-2 px-4 mr-2 rounded-lg hover:bg-air-dark"
       >
         View Patient
       </Link>
       <span className="mt-2">
-        <button className="bg-yellow-500 text-white py-2 px-4 rounded-lg mr-2 hover:bg-yellow-700">
-          Edit
-        </button>
         <button
           onClick={() => onDelete(id)}
-          className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-700"
+          className="bg-barn-light text-white py-1.5 px-4 rounded-lg hover:bg-barn-dark"
         >
           Delete
         </button>
