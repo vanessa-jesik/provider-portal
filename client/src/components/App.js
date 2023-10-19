@@ -8,7 +8,7 @@ import PatientPage from "./PatientPage.js";
 
 function App() {
   return (
-    <div>
+    <div className="selection:bg-air-light selection:text-papaya-light">
       <Navbar />
       <main>
         <Routes>
