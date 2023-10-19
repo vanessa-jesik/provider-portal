@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import IncidentCard from "./IncidentCard.js";
 import AddIncidentForm from "./AddIncidentForm.js";
 
 function ProviderById() {
@@ -53,22 +54,11 @@ function ProviderById() {
           ) : null}
           <div>
             {provider.incidents.map(incident => (
-              <div key={incident.id}>
-                <p>Incident:</p>
-                <p>{incident.date_time}</p>
-                <p>Location: {incident.location}</p>
-                <p>Description: {incident.description}</p>
-                <p>Patient:</p>
-                <p>Name: {incident.patient.name}</p>
-                <p>
-                  Age: {incident.patient.age} Sex: {incident.patient.sex}
-                </p>
-                <p>Address: {incident.patient.address}</p>
-                <button>Edit Incident</button>
-                <button onClick={() => handleDeleteIncident(incident.id)}>
-                  Delete Incident
-                </button>
-              </div>
+              <IncidentCard
+                key={incident.id}
+                incident={incident}
+                handleDeleteIncident={handleDeleteIncident}
+              />
             ))}
           </div>
         </div>
