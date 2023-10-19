@@ -49,7 +49,7 @@ function ProviderById() {
           <h2>Related Incidents:</h2>
           {provider ? (
             provider.incidents.length === 0 ? (
-              <p>No incidents recorded for this provider.</p>
+              <p>Nio incidents recorded for this provder.</p>
             ) : null
           ) : null}
           <div>
@@ -65,7 +65,6 @@ function ProviderById() {
       ) : (
         <h1>Loading...</h1>
       )}
-      <h1>Add a new incident for this provider:</h1>
       <AddIncidentForm
         provider_id={id}
         handleSubmitNewIncident={handleSubmitNewIncident}

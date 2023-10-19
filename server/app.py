@@ -102,7 +102,9 @@ class ProviderById(Resource):
 
 class Patients(Resource):
     def get(self):
-        return make_response([patient.to_dict() for patient in Patient.query.all()])
+        return make_response(
+            [patient.to_dict() for patient in Patient.query.all()], 200
+        )
 
 
 class Incidents(Resource):
@@ -120,12 +122,30 @@ class Incidents(Resource):
             db.session.commit()
             return make_response(incident.to_dict(rules=("-provider",)), 201)
         except ValueError as e:
-            return make_response("", 422)
+            return make_response({"error": e.__str__()}, 422)
 
 
 class IncidentById(Resource):
+    def get(self, id):
+        incident = db.session.get(Incident, id)
+        return make_response(incident.to_dict(rules=("-provider",)), 200)
+
     def patch(self, id):
-        pass
+        incident = db.session.get(Incident, id)
+        incident_json = request.get_json()
+        date_time_str = incident_json["date_time"]
+        date_time = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S")
+        incident_json["date_time"] = date_time
+        if incident:
+            try:
+                for key in incident_json:
+                    if hasattr(incident, key):
+                        setattr(incident, key, incident_json[key])
+                db.session.commit()
+                return make_response(incident.to_dict(rules=("-provider",)), 202)
+            except ValueError as e:
+                return make_response({"error": e.__str__()}, 422)
+        return make_response({"error": "Incident not found"}, 404)
 
     def delete(self, id):
         incident = db.session.get(Incident, id)
@@ -134,13 +154,6 @@ class IncidentById(Resource):
             db.session.commit()
             return make_response("", 204)
         return make_response({"error": "Incident not found"}, 404)
-
-
-class Patients(Resource):
-    def get(self):
-        return make_response(
-            [patient.to_dict() for patient in Patient.query.all()], 200
-        )
 
 
 api.add_resource(Providers, "/providers")

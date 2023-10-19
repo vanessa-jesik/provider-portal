@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import UpdateIncidentForm from "./UpdateIncidentForm.js";
 
 function IncidentCard({ incident, handleDeleteIncident }) {
+  const [showForm, setShowForm] = useState(false);
   const { id, date_time, description, location, patient } = incident;
+
   return (
     <div>
       <p>Incident:</p>
@@ -14,8 +17,9 @@ function IncidentCard({ incident, handleDeleteIncident }) {
         Age: {patient.age} Sex: {patient.sex}
       </p>
       <p>Address: {patient.address}</p>
-      <button>Edit Incident</button>
+      <button onClick={() => setShowForm(!showForm)}>Edit Incident</button>
       <button onClick={() => handleDeleteIncident(id)}>Delete Incident</button>
+      {showForm ? <UpdateIncidentForm incident_id={id} /> : null}
     </div>
   );
 }
