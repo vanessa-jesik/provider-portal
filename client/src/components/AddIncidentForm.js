@@ -1,19 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-function AddIncidentForm({ provider_id, handleSubmitNewIncident }) {
-  const [patients, setPatients] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:5555/patients")
-      .then(r => r.json())
-      .then(patients => setPatients(patients))
-      .catch(error => {
-        console.error("Error fetching patients", error);
-      });
-  }, []);
-
+function AddIncidentForm({ provider_id, patients, handleSubmitNewIncident }) {
   const initialValues = {
     date_time: "",
     description: "",
@@ -26,7 +15,7 @@ function AddIncidentForm({ provider_id, handleSubmitNewIncident }) {
     date_time: yup.string().required("Must enter incident date and time"),
     description: yup.string().required("Must enter a description").max(100),
     location: yup.string().required("Must enter an address").max(60),
-    patient_id: yup.number().required("Patient ID is required"),
+    patient_id: yup.number().required("Patient is required"),
   });
 
   const onSubmit = (values, formikBag) => {

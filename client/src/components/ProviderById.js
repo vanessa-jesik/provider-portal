@@ -5,6 +5,7 @@ import AddIncidentForm from "./AddIncidentForm.js";
 
 function ProviderById() {
   const [provider, setProvider] = useState();
+  const [patients, setPatients] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
@@ -16,8 +17,28 @@ function ProviderById() {
       });
   }, []);
 
+  useEffect(() => {
+    fetch("http://localhost:5555/patients")
+      .then(r => r.json())
+      .then(patients => setPatients(patients))
+      .catch(error => {
+        console.error("Error fetching patients", error);
+      });
+  }, []);
+
   function handleSubmitNewIncident(newIncident) {
     const updatedIncidents = provider.incidents.concat(newIncident);
+    const updatedProvider = { ...provider, incidents: updatedIncidents };
+    setProvider(updatedProvider);
+  }
+
+  function handleUpdateIncident(updatedIncident) {
+    const updatedIncidents = provider.incidents.map(incident => {
+      if (incident.id === updatedIncident.id) {
+        return updatedIncident;
+      }
+      return incident;
+    });
     const updatedProvider = { ...provider, incidents: updatedIncidents };
     setProvider(updatedProvider);
   }
@@ -58,6 +79,8 @@ function ProviderById() {
                 key={incident.id}
                 incident={incident}
                 handleDeleteIncident={handleDeleteIncident}
+                handleUpdateIncident={handleUpdateIncident}
+                patients={patients}
               />
             ))}
           </div>
@@ -67,6 +90,7 @@ function ProviderById() {
       )}
       <AddIncidentForm
         provider_id={id}
+        patients={patients}
         handleSubmitNewIncident={handleSubmitNewIncident}
       />
     </div>

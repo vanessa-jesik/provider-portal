@@ -126,10 +126,6 @@ class Incidents(Resource):
 
 
 class IncidentById(Resource):
-    def get(self, id):
-        incident = db.session.get(Incident, id)
-        return make_response(incident.to_dict(rules=("-provider",)), 200)
-
     def patch(self, id):
         incident = db.session.get(Incident, id)
         incident_json = request.get_json()

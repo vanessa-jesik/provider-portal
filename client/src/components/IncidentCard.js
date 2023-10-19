@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import UpdateIncidentForm from "./UpdateIncidentForm.js";
 
-function IncidentCard({ incident, handleDeleteIncident }) {
+function IncidentCard({
+  incident,
+  handleDeleteIncident,
+  handleUpdateIncident,
+  patients,
+}) {
   const [showForm, setShowForm] = useState(false);
   const { id, date_time, description, location, patient } = incident;
 
@@ -19,7 +24,15 @@ function IncidentCard({ incident, handleDeleteIncident }) {
       <p>Address: {patient.address}</p>
       <button onClick={() => setShowForm(!showForm)}>Edit Incident</button>
       <button onClick={() => handleDeleteIncident(id)}>Delete Incident</button>
-      {showForm ? <UpdateIncidentForm incident_id={id} /> : null}
+      {showForm ? (
+        <UpdateIncidentForm
+          incident={incident}
+          patients={patients}
+          handleUpdateIncident={handleUpdateIncident}
+          showForm={showForm}
+          setShowForm={setShowForm}
+        />
+      ) : null}
     </div>
   );
 }
