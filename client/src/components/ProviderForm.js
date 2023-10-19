@@ -39,8 +39,36 @@ const MySelect = ({ label, ...props }) => {
   );
 };
 
-const ProviderForm = ({ handleNewProvider }) => {
-  const handleSubmit = (values) => {
+const ProviderForm = ({
+  handleNewProvider,
+  handleUpdateProvider,
+  isEditing,
+  provider,
+  initialValues,
+}) => {
+  const updateProvider = (values) => {
+    const updatedProvider = { ...provider, ...values };
+    fetch(`/providers/${provider.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedProvider),
+    })
+      .then((r) => {
+        if (!r.ok) {
+          throw new Error(`Network response was not ok: ${r.status}`);
+        }
+        return r.json();
+      })
+      .then((providers) => {
+        handleUpdateProvider(updatedProvider);
+        console.log("Updated provider ran");
+      })
+      .catch((error) => {
+        console.error("Error updating provider:", error);
+      });
+  };
+
+  const postProvider = (values) => {
     const newProvider = {
       name: values.name,
       badge_number: values.badge_number,
@@ -55,18 +83,26 @@ const ProviderForm = ({ handleNewProvider }) => {
       .then((r) => r.json())
       .then((providers) => {
         handleNewProvider(providers);
+        console.log("New provider ran");
       });
+  };
+
+  const handleSubmit = (values) => {
+    if (isEditing) {
+      updateProvider(values);
+    } else {
+      postProvider(values);
+    }
   };
 
   return (
     <div className="p-4 border rounded-lg shadow-md bg-white">
-      <h1 className="text-2xl font-semibold mb-4">Add a New Provider</h1>
+      <h1 className="text-2xl font-semibold mb-4">
+        {isEditing ? "Edit Provider" : "Add a New Provider"}
+      </h1>
       <Formik
-        initialValues={{
-          name: "",
-          badge_number: "",
-          provider_type: "",
-        }}
+        onSubmit={handleSubmit}
+        initialValues={initialValues}
         validationSchema={Yup.object({
           name: Yup.string()
             .max(25, "Must be 25 characters or less")
@@ -81,28 +117,10 @@ const ProviderForm = ({ handleNewProvider }) => {
             )
             .required("Required"),
         })}
-        onSubmit={(values, { setSubmitting }) => {
-          handleSubmit(values);
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
-        }}
       >
         <Form>
-          <MyTextInput
-            label="Name"
-            name="name"
-            type="text"
-            // placeholder="Name..."
-          />
-          <MyTextInput
-            label="Badge Number"
-            name="badge_number"
-            type="text"
-            // placeholder="12345"
-          />
-
+          <MyTextInput label="Name" name="name" type="text" />
+          <MyTextInput label="Badge Number" name="badge_number" type="text" />
           <MySelect label="Provider Type" name="provider_type">
             <option value="">Select a provider type</option>
             <option value="EMT">EMT</option>
@@ -111,7 +129,6 @@ const ProviderForm = ({ handleNewProvider }) => {
             <option value="Nurse">Nurse</option>
             <option value="Other">Other</option>
           </MySelect>
-
           <button
             type="submit"
             className="bg-blurple-500 text-white py-2 px-4 rounded-lg hover:bg-blurple-700"
