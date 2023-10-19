@@ -11,37 +11,47 @@ function IncidentCard({
   const { id, date_time, description, location, patient } = incident;
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <p className="font-bold">Incident:</p>
+    <div className="bg-white p-4 m-6 rounded-lg shadow-lg">
+      <p className="text-lg font-bold px-4 pb-2">Incident:</p>
       <p>{date_time}</p>
       <p>
-        <span class="font-semibold">Location: </span>
+        <span className="font-bold">Location: </span>
         {location}
       </p>
       <p>
-        <span class="font-semibold">Description: </span>
+        <span className="font-bold">Description: </span>
         {description}
       </p>
-      <p>
-        <span class="font-semibold">Patient:</span>
-      </p>
-      <p>Name: {patient.name}</p>
-      <p>
-        Age: {patient.age} Sex: {patient.sex}
-      </p>
-      <p>Address: {patient.address}</p>
+      <div className="p-4">
+        <p>
+          <span className="font-bold pl-4">Patient:</span>
+        </p>
+        <p>
+          <span className="font-semibold">Name: </span>
+          {patient.name}
+        </p>
+        <p>
+          <span className="font-semibold ">Age: </span>
+          {patient.age} <span className="font-semibold ml-6">Sex: </span>
+          {patient.sex}
+        </p>
+        <p>
+          <span className="font-semibold ">Address: </span>
+          {patient.address}
+        </p>
+      </div>
 
       {showUpdateForm ? (
         <button
           onClick={() => setShowUpdateForm(false)}
-          className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900"
+          className="bg-prussian-light text-papaya px-4 py-2 mx-4 my-2 rounded-md hover:bg-prussian"
         >
           Close Form
         </button>
       ) : (
         <button
           onClick={() => setShowUpdateForm(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+          className="bg-air text-papaya px-4 py-2 mx-4 my-2 rounded-md hover:bg-air-dark"
         >
           Edit Incident
         </button>
@@ -49,7 +59,7 @@ function IncidentCard({
 
       <button
         onClick={() => handleDeleteIncident(id)}
-        className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900"
+        className="bg-barn-light text-papaya px-4 py-2 mx-4 my-2 rounded-md hover:bg-fire-dark"
       >
         Delete Incident
       </button>

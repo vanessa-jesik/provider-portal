@@ -8,7 +8,8 @@ from flask import Flask, request, make_response
 from flask_restful import Api, Resource
 from flask_cors import CORS
 import os
-import datetime
+from datetime import datetime
+from dateutil import parser
 
 # Local imports
 from config import app, db, api
@@ -109,11 +110,11 @@ class Patients(Resource):
 
 class Incidents(Resource):
     def post(self):
-        incident_json = request.get_json()
-        date_time_str = incident_json["date_time"]
-        date_time = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S")
-        incident_json["date_time"] = date_time
         incident = Incident()
+        incident_json = request.get_json()
+        date_time_str = incident_json["date_time"].replace("Z", "")
+        date_time = parser.isoparse(date_time_str)
+        incident_json["date_time"] = date_time
         try:
             for key in incident_json:
                 if hasattr(incident, key):
@@ -129,8 +130,8 @@ class IncidentById(Resource):
     def patch(self, id):
         incident = db.session.get(Incident, id)
         incident_json = request.get_json()
-        date_time_str = incident_json["date_time"]
-        date_time = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S")
+        date_time_str = incident_json["date_time"].replace("Z", "")
+        date_time = parser.isoparse(date_time_str)
         incident_json["date_time"] = date_time
         if incident:
             try:

@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 function UpdateIncidentForm({
   incident,
@@ -10,8 +11,9 @@ function UpdateIncidentForm({
 }) {
   const { id, date_time, description, location, provider_id, patient_id } =
     incident;
+
   const initialValues = {
-    date_time,
+    date_time: "",
     description,
     location,
     provider_id,
@@ -54,24 +56,24 @@ function UpdateIncidentForm({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Update this incident:</h1>
-      <form onSubmit={formik.handleSubmit} className="mb-4">
-        <div className="mb-4">
-          <label htmlFor="date_time" className="block font-semibold">
+      <h2 className="text-xl font-bold px-4 py-2">Update this incident:</h2>
+      <form onSubmit={formik.handleSubmit} className="m-4">
+        <div className="m-2">
+          <label htmlFor="date_time" className="font-semibold">
             Incident date and time:
           </label>
           <br />
-          <input
+          <DateTimePicker
             id="date_time"
             name="date_time"
-            onChange={formik.handleChange}
+            format="YYYY-MM-DD HH:mm:ss"
+            onChange={date => formik.setFieldValue("date_time", date)}
             value={formik.values.date_time}
-            className="border border-gray-300 p-2 w-full rounded-md"
           />
-          <p className="text-red-500 mt-2"> {formik.errors.date_time}</p>
+          <p className="text-fire-light"> {formik.errors.date_time}</p>
         </div>
-        <div className="mb-4">
-          <label htmlFor="description" className="block font-semibold">
+        <div className="m-2">
+          <label htmlFor="description" className="font-semibold">
             Description of incident:
           </label>
           <br />
@@ -80,12 +82,12 @@ function UpdateIncidentForm({
             name="description"
             onChange={formik.handleChange}
             value={formik.values.description}
-            className="border border-gray-300 p-2 w-full rounded-md"
+            className="border border-gray-300 p-2 mb-2 w-full rounded-md focus:outline-air"
           />
-          <p className="text-red-500 mt-2"> {formik.errors.description}</p>
+          <p className="text-fire-light"> {formik.errors.description}</p>
         </div>
-        <div className="mb-4">
-          <label htmlFor="location" className="block font-semibold">
+        <div className="m-2">
+          <label htmlFor="location" className="font-semibold">
             Location of incident:
           </label>
           <br />
@@ -94,12 +96,12 @@ function UpdateIncidentForm({
             name="location"
             onChange={formik.handleChange}
             value={formik.values.location}
-            className="border border-gray-300 p-2 w-full rounded-md"
+            className="border border-gray-300 p-2 mb-2 w-full rounded-md focus:outline-air"
           />
-          <p className="text-red-500 mt-2"> {formik.errors.location}</p>
+          <p className="text-fire-light"> {formik.errors.location}</p>
         </div>
-        <div className="mb-4">
-          <label htmlFor="patient_id" className="block font-semibold">
+        <div className="m-2">
+          <label htmlFor="patient_id" className="font-semibold">
             Patient:
           </label>
           <br />
@@ -108,8 +110,9 @@ function UpdateIncidentForm({
             name="patient_id"
             onChange={formik.handleChange}
             value={formik.values.patient_id}
-            className="border border-gray-300 p-2 w-full rounded-md"
+            className="border border-gray-300 p-2 mb-2 w-full rounded-md focus:outline-air"
           >
+            <option label="Select a patient" />
             {patients
               ? patients.map(patient => (
                   <option
@@ -120,11 +123,11 @@ function UpdateIncidentForm({
                 ))
               : null}
           </select>
-          <p className="text-red-500 mt-2"> {formik.errors.patient_id}</p>
+          <p className="text-fire-light"> {formik.errors.patient_id}</p>
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+          className="bg-papaya text-fire px-4 py-2 mx-4 my-2 border-solid border-2 border-papaya-dark rounded-md hover:bg-papaya-dark"
         >
           Submit
         </button>
