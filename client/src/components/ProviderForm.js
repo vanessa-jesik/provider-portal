@@ -6,11 +6,14 @@ const MyTextInput = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   return (
     <div className="mb-4">
-      <label htmlFor={props.id || props.name} className="block text-gray-600">
+      <label
+        htmlFor={props.id || props.name}
+        className="block text-gray-600 font-semibold"
+      >
         {label}
       </label>
       <input
-        className="text-input bg-gray-100 border-gray-300 focus:border-blurple-500"
+        className="text-input bg-gray-100 border rounded-lg p-1 focus:ring focus:ring-blurple-dark focus:ring-opacity-50"
         {...field}
         {...props}
         placeholder={props.placeholder}
@@ -26,10 +29,17 @@ const MySelect = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   return (
     <div className="mb-4">
-      <label htmlFor={props.id || props.name} className="block text-gray-600">
+      <label
+        htmlFor={props.id || props.name}
+        className="block text-gray-600 font-semibold"
+      >
         {label}
       </label>
-      <select className="text-input" {...field} {...props}>
+      <select
+        className="text-input bg-gray-100 border rounded-lg p-1.5 focus:ring focus:ring-blurple-dark focus:ring-opacity-50"
+        {...field}
+        {...props}
+      >
         {props.children}
       </select>
       {meta.touched && meta.error ? (
@@ -44,6 +54,8 @@ const ProviderForm = ({
   handleUpdateProvider,
   isEditing,
   provider,
+  toggleEdit,
+  toggleForm,
 }) => {
   const initialValues = isEditing
     ? {
@@ -103,8 +115,12 @@ const ProviderForm = ({
   const handleSubmit = (values, formikBag) => {
     if (isEditing) {
       updateProvider(values);
+      toggleEdit();
+      alert("Provider has been updated.");
     } else {
       postProvider(values, formikBag);
+      toggleForm();
+      alert("Provider has been added.");
     }
   };
 
@@ -120,8 +136,11 @@ const ProviderForm = ({
           name: Yup.string()
             .max(25, "Must be 25 characters or less")
             .required("Required"),
-          badge_number: Yup.number()
-            .typeError("Must be a number")
+          badge_number: Yup.string()
+            .matches(
+              /^\d{5}$/,
+              "Badge number must be exactly 5 digits. (Example: 12345)"
+            )
             .required("Required"),
           provider_type: Yup.string()
             .oneOf(
@@ -132,8 +151,18 @@ const ProviderForm = ({
         })}
       >
         <Form>
-          <MyTextInput label="Name" name="name" type="text" />
-          <MyTextInput label="Badge Number" name="badge_number" type="text" />
+          <MyTextInput
+            label="Name"
+            name="name"
+            type="text"
+            placeholder="John Doe"
+          />
+          <MyTextInput
+            label="Badge Number"
+            name="badge_number"
+            type="text"
+            placeholder="12345"
+          />
           <MySelect label="Provider Type" name="provider_type">
             <option value="">Select a provider type</option>
             <option value="EMT">EMT</option>
@@ -144,7 +173,7 @@ const ProviderForm = ({
           </MySelect>
           <button
             type="submit"
-            className="bg-blurple-500 text-white py-2 px-4 rounded-lg hover:bg-blurple-700"
+            className="bg-papaya-dark text-white py-2 px-4 rounded-lg hover:bg-papaya mt-4"
           >
             Submit
           </button>
