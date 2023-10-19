@@ -1,19 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-function IncidentForm({ provider_id, refreshPage, setRefreshPage }) {
-  const [patients, setPatients] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:5555/patients")
-      .then(r => r.json())
-      .then(patients => setPatients(patients))
-      .catch(error => {
-        console.error("Error fetching patients", error);
-      });
-  }, []);
-
+function AddIncidentForm({ provider_id, patients, handleSubmitNewIncident }) {
   const initialValues = {
     date_time: "",
     description: "",
@@ -26,7 +15,7 @@ function IncidentForm({ provider_id, refreshPage, setRefreshPage }) {
     date_time: yup.string().required("Must enter incident date and time"),
     description: yup.string().required("Must enter a description").max(100),
     location: yup.string().required("Must enter an address").max(60),
-    patient_id: yup.number().required("Patient ID is required"),
+    patient_id: yup.number().required("Patient is required"),
   });
 
   const onSubmit = (values, formikBag) => {
@@ -34,20 +23,31 @@ function IncidentForm({ provider_id, refreshPage, setRefreshPage }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(values, null, 2),
-    }).then(res => {
-      if (res.status == 201) {
-        setRefreshPage(!refreshPage);
+    })
+      .then(r => {
+        if (r.status === 201) {
+          return r.json();
+        } else {
+          throw new Error("Failed to create incident");
+        }
+      })
+      .then(newIncident => {
+        handleSubmitNewIncident(newIncident);
         formikBag.resetForm();
-      }
-    });
+      })
+      .catch(error => {
+        console.error("Error creating incident", error);
+      });
   };
 
   const formik = useFormik({ initialValues, validationSchema, onSubmit });
 
   return (
     <div>
+      <h1>New incident details:</h1>
       <form onSubmit={formik.handleSubmit} style={{ margin: "30px" }}>
         <label htmlFor="date_time">Incident date and time:</label>
         <br />
@@ -102,4 +102,4 @@ function IncidentForm({ provider_id, refreshPage, setRefreshPage }) {
   );
 }
 
-export default IncidentForm;
+export default AddIncidentForm;
