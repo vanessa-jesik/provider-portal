@@ -4,6 +4,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import DateTime
+import re
 
 from config import db
 
@@ -34,6 +35,32 @@ class Provider(db.Model, SerializerMixin):
     serialize_rules = ("-patients", "-incidents")
 
     # add validation??
+    @validates("name")
+    def validate_name(self, key, name):
+        if not name:
+            raise ValueError("Name is required")
+        if len(name) > 30:
+            raise ValueError("Name must be 30 characters or less")
+        if not re.match("^[A-Za-z ]+$", name):
+            raise ValueError("Name must contain only letters and spaces")
+        return name
+
+    @validates("badge_number")
+    def validate_badge_number(self, key, badge_number):
+        if not badge_number:
+            raise ValueError("Must have a badge number")
+        if not badge_number.isdigit() or len(badge_number) != 5:
+            raise ValueError("Badge number must be exactly 5 digits")
+        return badge_number
+
+    @validates("provider_type")
+    def validate_provider_type(self, key, provider_type):
+        valid_types = ["EMT", "Paramedic", "Fire Fighter", "Nurse", "Other"]
+        if not provider_type:
+            raise ValueError("Provider type is required")
+        if provider_type not in valid_types:
+            raise ValueError("Invalid Provider Type")
+        return provider_type
 
     def __repr__(self):
         return f"<Provider {self.name}, {self.provider_type}, {self.badge_number}>"
@@ -70,8 +97,10 @@ class Incident(db.Model, SerializerMixin):
     date_time = db.Column(db.DateTime)
     description = db.Column(db.String)
     location = db.Column(db.String)
-    provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=False)
-    patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"), nullable=False)
+    provider_id = db.Column(db.Integer, db.ForeignKey(
+        "providers.id"), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey(
+        "patients.id"), nullable=False)
 
     # add relationships
     provider = db.relationship("Provider", back_populates="incidents")

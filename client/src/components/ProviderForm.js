@@ -44,6 +44,7 @@ const ProviderForm = ({
   handleUpdateProvider,
   isEditing,
   provider,
+  toggleEdit,
 }) => {
   const initialValues = isEditing
     ? {
@@ -103,6 +104,7 @@ const ProviderForm = ({
   const handleSubmit = (values, formikBag) => {
     if (isEditing) {
       updateProvider(values);
+      toggleEdit();
     } else {
       postProvider(values, formikBag);
     }

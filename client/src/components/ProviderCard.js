@@ -11,6 +11,10 @@ function ProviderCard({
   const [isEditing, setIsEditing] = useState(false);
   const [editedProvider, setEditedProvider] = useState({});
 
+  const handleToggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
   const handleEditClick = () => {
     setIsEditing(true);
     setEditedProvider({ id, name, badge_number, provider_type });
@@ -57,6 +61,7 @@ function ProviderCard({
             handleNewProvider={handleNewProvider}
             handleUpdateProvider={handleUpdateProvider}
             provider={editedProvider}
+            toggleEdit={handleToggleEdit}
           />
           <button onClick={handleCancelEdit}>Cancel</button>
         </div>
