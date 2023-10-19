@@ -54,56 +54,80 @@ function UpdateIncidentForm({
 
   return (
     <div>
-      <h1>Update this incident:</h1>
-      <form onSubmit={formik.handleSubmit} style={{ margin: "30px" }}>
-        <label htmlFor="date_time">Incident date and time:</label>
-        <br />
-        <input
-          id="date_time"
-          name="date_time"
-          onChange={formik.handleChange}
-          value={formik.values.date_time}
-        />
-        <p style={{ color: "red" }}> {formik.errors.date_time}</p>
-        <label htmlFor="description">Description of incident:</label>
-        <br />
-        <input
-          id="description"
-          name="description"
-          onChange={formik.handleChange}
-          value={formik.values.description}
-        />
-        <p style={{ color: "red" }}> {formik.errors.description}</p>
-        <label htmlFor="location">Location of incident:</label>
-        <br />
-        <input
-          id="location"
-          name="location"
-          onChange={formik.handleChange}
-          value={formik.values.location}
-        />
-        <p style={{ color: "red" }}> {formik.errors.location}</p>
-        <label htmlFor="patient_id">Patient:</label>
-        <br />
-        <select
-          id="patient_id"
-          name="patient_id"
-          onChange={formik.handleChange}
-          value={formik.values.patient_id}
+      <h1 className="text-2xl font-bold mb-4">Update this incident:</h1>
+      <form onSubmit={formik.handleSubmit} className="mb-4">
+        <div className="mb-4">
+          <label htmlFor="date_time" className="block font-semibold">
+            Incident date and time:
+          </label>
+          <br />
+          <input
+            id="date_time"
+            name="date_time"
+            onChange={formik.handleChange}
+            value={formik.values.date_time}
+            className="border border-gray-300 p-2 w-full rounded-md"
+          />
+          <p className="text-red-500 mt-2"> {formik.errors.date_time}</p>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="description" className="block font-semibold">
+            Description of incident:
+          </label>
+          <br />
+          <input
+            id="description"
+            name="description"
+            onChange={formik.handleChange}
+            value={formik.values.description}
+            className="border border-gray-300 p-2 w-full rounded-md"
+          />
+          <p className="text-red-500 mt-2"> {formik.errors.description}</p>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="location" className="block font-semibold">
+            Location of incident:
+          </label>
+          <br />
+          <input
+            id="location"
+            name="location"
+            onChange={formik.handleChange}
+            value={formik.values.location}
+            className="border border-gray-300 p-2 w-full rounded-md"
+          />
+          <p className="text-red-500 mt-2"> {formik.errors.location}</p>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="patient_id" className="block font-semibold">
+            Patient:
+          </label>
+          <br />
+          <select
+            id="patient_id"
+            name="patient_id"
+            onChange={formik.handleChange}
+            value={formik.values.patient_id}
+            className="border border-gray-300 p-2 w-full rounded-md"
+          >
+            {patients
+              ? patients.map(patient => (
+                  <option
+                    key={patient.id}
+                    value={patient.id}
+                    label={patient.name}
+                  />
+                ))
+              : null}
+          </select>
+          <p className="text-red-500 mt-2"> {formik.errors.patient_id}</p>
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700"
         >
-          <option value="0" label="Select a patient" />
-          {patients
-            ? patients.map(patient => (
-                <option
-                  key={patient.id}
-                  value={patient.id}
-                  label={patient.name}
-                />
-              ))
-            : null}
-        </select>
-        <p style={{ color: "red" }}> {formik.errors.patient_id}</p>
-        <button type="submit">Submit</button>
+          Submit
+        </button>
       </form>
     </div>
   );

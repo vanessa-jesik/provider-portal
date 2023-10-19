@@ -62,13 +62,17 @@ function ProviderById() {
     <div>
       {provider ? (
         <div>
-          <div>
-            <h2>Selected Provider:</h2>
-            <h3>{provider.name}</h3>
-            <p>{provider.provider_type}</p>
-            <p>Badge Number: {provider.badge_number}</p>
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold text-blue-500">
+              Selected Provider:
+            </h2>
+            <h3 className="text-lg font-semibold">{provider.name}</h3>
+            <p className="text-gray-600">{provider.provider_type}</p>
+            <p className="text-gray-600">
+              Badge Number: {provider.badge_number}
+            </p>
           </div>
-          <h2>Related Incidents:</h2>
+          <h2 className="text-lg font-semibold">Related Incidents:</h2>
           {provider ? (
             provider.incidents.length === 0 ? (
               <p>Nio incidents recorded for this provder.</p>
@@ -91,9 +95,17 @@ function ProviderById() {
       )}
 
       {showAddForm ? (
-        <button onClick={() => setShowAddForm(false)}>Close form.</button>
+        <button
+          onClick={() => setShowAddForm(false)}
+          className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900"
+        >
+          Close form.
+        </button>
       ) : (
-        <button onClick={() => setShowAddForm(true)}>
+        <button
+          onClick={() => setShowAddForm(true)}
+          className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900"
+        >
           Add new incident for this provider:
         </button>
       )}

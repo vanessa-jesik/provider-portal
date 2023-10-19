@@ -11,12 +11,20 @@ function IncidentCard({
   const { id, date_time, description, location, patient } = incident;
 
   return (
-    <div>
-      <p>Incident:</p>
+    <div className="bg-white p-4 rounded-lg shadow-md">
+      <p className="font-bold">Incident:</p>
       <p>{date_time}</p>
-      <p>Location: {location}</p>
-      <p>Description: {description}</p>
-      <p>Patient:</p>
+      <p>
+        <span class="font-semibold">Location: </span>
+        {location}
+      </p>
+      <p>
+        <span class="font-semibold">Description: </span>
+        {description}
+      </p>
+      <p>
+        <span class="font-semibold">Patient:</span>
+      </p>
       <p>Name: {patient.name}</p>
       <p>
         Age: {patient.age} Sex: {patient.sex}
@@ -24,12 +32,27 @@ function IncidentCard({
       <p>Address: {patient.address}</p>
 
       {showUpdateForm ? (
-        <button onClick={() => setShowUpdateForm(false)}>Close Form</button>
+        <button
+          onClick={() => setShowUpdateForm(false)}
+          className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900"
+        >
+          Close Form
+        </button>
       ) : (
-        <button onClick={() => setShowUpdateForm(true)}>Edit Incident</button>
+        <button
+          onClick={() => setShowUpdateForm(true)}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+        >
+          Edit Incident
+        </button>
       )}
 
-      <button onClick={() => handleDeleteIncident(id)}>Delete Incident</button>
+      <button
+        onClick={() => handleDeleteIncident(id)}
+        className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900"
+      >
+        Delete Incident
+      </button>
       {showUpdateForm ? (
         <UpdateIncidentForm
           incident={incident}
