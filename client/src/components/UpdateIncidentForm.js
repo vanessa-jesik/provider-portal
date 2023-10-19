@@ -6,8 +6,7 @@ function UpdateIncidentForm({
   incident,
   patients,
   handleUpdateIncident,
-  showForm,
-  setShowForm,
+  setShowUpdateForm,
 }) {
   const { id, date_time, description, location, provider_id, patient_id } =
     incident;
@@ -44,7 +43,7 @@ function UpdateIncidentForm({
       })
       .then(updatedIncident => {
         handleUpdateIncident(updatedIncident);
-        setShowForm(!showForm);
+        setShowUpdateForm(false);
       })
       .catch(error => {
         console.error("Error updating incident", error);

@@ -47,7 +47,7 @@ function AddIncidentForm({ provider_id, patients, handleSubmitNewIncident }) {
 
   return (
     <div>
-      <h1>Add a new incident for this provider:</h1>
+      <h1>New incident details:</h1>
       <form onSubmit={formik.handleSubmit} style={{ margin: "30px" }}>
         <label htmlFor="date_time">Incident date and time:</label>
         <br />

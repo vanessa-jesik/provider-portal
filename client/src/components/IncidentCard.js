@@ -7,7 +7,7 @@ function IncidentCard({
   handleUpdateIncident,
   patients,
 }) {
-  const [showForm, setShowForm] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
   const { id, date_time, description, location, patient } = incident;
 
   return (
@@ -22,15 +22,20 @@ function IncidentCard({
         Age: {patient.age} Sex: {patient.sex}
       </p>
       <p>Address: {patient.address}</p>
-      <button onClick={() => setShowForm(!showForm)}>Edit Incident</button>
+
+      {showUpdateForm ? (
+        <button onClick={() => setShowUpdateForm(false)}>Close Form</button>
+      ) : (
+        <button onClick={() => setShowUpdateForm(true)}>Edit Incident</button>
+      )}
+
       <button onClick={() => handleDeleteIncident(id)}>Delete Incident</button>
-      {showForm ? (
+      {showUpdateForm ? (
         <UpdateIncidentForm
           incident={incident}
           patients={patients}
           handleUpdateIncident={handleUpdateIncident}
-          showForm={showForm}
-          setShowForm={setShowForm}
+          setShowUpdateForm={setShowUpdateForm}
         />
       ) : null}
     </div>

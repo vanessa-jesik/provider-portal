@@ -7,6 +7,7 @@ function ProviderById() {
   const [provider, setProvider] = useState();
   const [patients, setPatients] = useState([]);
   const { id } = useParams();
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:5555/providers/${id}`)
@@ -88,11 +89,22 @@ function ProviderById() {
       ) : (
         <h1>Loading...</h1>
       )}
-      <AddIncidentForm
-        provider_id={id}
-        patients={patients}
-        handleSubmitNewIncident={handleSubmitNewIncident}
-      />
+
+      {showAddForm ? (
+        <button onClick={() => setShowAddForm(false)}>Close form.</button>
+      ) : (
+        <button onClick={() => setShowAddForm(true)}>
+          Add new incident for this provider:
+        </button>
+      )}
+
+      {showAddForm ? (
+        <AddIncidentForm
+          provider_id={id}
+          patients={patients}
+          handleSubmitNewIncident={handleSubmitNewIncident}
+        />
+      ) : null}
     </div>
   );
 }
