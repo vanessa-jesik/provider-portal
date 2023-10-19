@@ -19,7 +19,6 @@ function ProviderPage() {
   };
 
   const handleUpdateProvider = (editedProvider) => {
-    // Find and update the provider in the providers list
     setProviders((prevProviders) =>
       prevProviders.map((provider) =>
         provider.id === editedProvider.id ? editedProvider : provider
@@ -44,6 +43,7 @@ function ProviderPage() {
       onUpdate={handleUpdateProvider}
       onDelete={handleDeleteProvider}
       handleNewProvider={handleNewProvider}
+      handleUpdateProvider={handleUpdateProvider}
     />
   ));
 
@@ -56,7 +56,13 @@ function ProviderPage() {
         <h1 className="text-2xl font-semibold mb-4">Providers</h1>
         <div className="providerList">{providerCards}</div>
       </Suspense>
-      <ProviderForm handleNewProvider={handleNewProvider} />
+      <ProviderForm
+        key={providers.id}
+        providers={providers}
+        initialValues={{}}
+        handleNewProvider={handleNewProvider}
+        handleUpdateProvider={handleUpdateProvider}
+      />
     </div>
   );
 }

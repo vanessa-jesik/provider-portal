@@ -4,21 +4,23 @@ import ProviderForm from "./ProviderForm";
 
 function ProviderCard({
   provider: { id, name, badge_number, provider_type },
-  onUpdate,
   onDelete,
   handleNewProvider,
+  handleUpdateProvider,
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedProvider, setEditedProvider] = useState({}); // State to store edited data
+  const [editedProvider, setEditedProvider] = useState({});
 
   const handleEditClick = () => {
     setIsEditing(true);
     setEditedProvider({ id, name, badge_number, provider_type });
+    console.log("the handleEditClick function ran");
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
     setEditedProvider({});
+    console.log("the handleCancelClick function ran");
   };
 
   return (
@@ -47,22 +49,18 @@ function ProviderCard({
           Delete
         </button>
       </span>
-
-      {isEditing && (
+      {isEditing && editedProvider ? (
         <div>
           <ProviderForm
-            initialValues={editedProvider} // Pass the edited provider data
-            onSubmit={(editedProvider) => {
-              onUpdate(editedProvider); // Update the provider data in the parent component
-              setIsEditing(false);
-              setEditedProvider({});
-              onUpdate = { onUpdate }; // Pass the onUpdate function
-              handleNewProvider = { handleNewProvider }; //
-            }}
+            initialValues={editedProvider}
+            isEditing={isEditing}
+            handleNewProvider={handleNewProvider}
+            handleUpdateProvider={handleUpdateProvider}
+            provider={editedProvider}
           />
           <button onClick={handleCancelEdit}>Cancel</button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
