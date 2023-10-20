@@ -11,10 +11,25 @@ function AddPatientForm({ handleAddNewPatient, setShowAddPatientForm }) {
   };
 
   const validationSchema = yup.object().shape({
-    name: yup.string().required("Name is required"),
-    age: yup.number().required("Must enter age"),
-    sex: yup.string().required("Must enter sex"),
-    address: yup.string().required("Address is required"),
+    name: yup
+      .string()
+      .max(30, "Name must be 30 or fewer characters")
+      .required("Name is required"),
+    age: yup
+      .number()
+      .positive()
+      .integer()
+      .min(1, "Age must be at least 1")
+      .max(115, "Age cannot be greater than 115")
+      .required("Must enter age"),
+    sex: yup
+      .string()
+      .oneOf(["Female", "Male"])
+      .required("Must record Female or Male for patient sex"),
+    address: yup
+      .string()
+      .max(60, "Address must be fewer than 60 characters")
+      .required("Address is required"),
   });
 
   const onSubmit = (values) => {
@@ -24,7 +39,7 @@ function AddPatientForm({ handleAddNewPatient, setShowAddPatientForm }) {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(values, null, 2),
+      body: JSON.stringify(values),
     })
       .then((r) => {
         if (r.status === 201) {
@@ -70,6 +85,7 @@ function AddPatientForm({ handleAddNewPatient, setShowAddPatientForm }) {
           <input
             id="age"
             name="age"
+            type="number"
             onChange={formik.handleChange}
             value={formik.values.age}
             className="border border-gray-300 p-2 mb-2 w-full rounded-md focus:outline-air"

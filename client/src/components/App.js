@@ -6,8 +6,8 @@ import Home from "./Home.js";
 import Navbar from "./Navbar.js";
 import ProvidersPage from "./ProvidersPage.js";
 import ProviderById from "./ProviderById.js";
-import PatientById from "./PatientById.js";
 import PatientsPage from "./PatientsPage.js";
+import PatientById from "./PatientById.js";
 import Search from "./Search.js";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
             <Route path="/providers/:id" element={<ProviderById />} />
             <Route path="/patients" element={<PatientsPage />} />
             <Route path="/patients/:id" element={<PatientById />} />
-            <Route path="/search" element={<Search />} />
+            {/* <Route path="/search" element={<Search />} /> */}
           </Routes>
         </main>
       </div>
