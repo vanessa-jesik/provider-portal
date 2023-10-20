@@ -54,7 +54,7 @@ function PatientsPage() {
         ) : (
           <button
             onClick={() => setShowAddPatientForm(true)}
-            className="bg-prussian-light text-papaya px-4 py-2 my-4 rounded-md hover:bg-prussian"
+            className="bg-papaya-dark text-white py-2 px-4 rounded-lg mt-4 mb-4 hover:bg-papaya"
           >
             Add New Patient
           </button>
