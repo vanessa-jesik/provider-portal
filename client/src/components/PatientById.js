@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import IncidentCard from "./IncidentCard.js";
+import { useNavigate } from "react-router-dom";
 
 function PatientById() {
   const [patient, setPatient] = useState(null);
   //   const [incidents, setIncidents] = useState(null);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`http://localhost:5555/patients/${id}`)
@@ -30,6 +32,15 @@ function PatientById() {
       {patient ? (
         <div>
           <div className="bg-white p-4 rounded-lg shadow-md">
+            <button
+              onClick={() => {
+                navigate("/patients");
+                console.log("BACK button clicked");
+              }}
+              className="bg-barn text-papaya px-4 py-2 mx-4 m-2 rounded-md hover:bg-barn-dark"
+            >
+              View All Patients
+            </button>
             <h2 className="text-xl font-semibold text-blue-500">
               Selected Patient:
             </h2>

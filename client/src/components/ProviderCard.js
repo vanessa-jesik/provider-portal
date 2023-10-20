@@ -7,9 +7,11 @@ function ProviderCard({
   onDelete,
   handleNewProvider,
   handleUpdateProvider,
+  editedProvider,
+  setEditedProvider,
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedProvider, setEditedProvider] = useState({});
+  const [message, setMessage] = useState(null);
 
   const handleToggleEdit = () => {
     if (isEditing) {
@@ -21,8 +23,15 @@ function ProviderCard({
     }
   };
 
+  const clearMessage = () => {
+    setMessage(null);
+  };
+
   return (
     <div className="bg-white rounded-lg p-4 shadow-md">
+      {message && (
+        <div className="text-center text-green-600 mt-4">{message}</div>
+      )}
       <h3 className="text-xl font-semibold mb-2">{name}</h3>
       <p className="text-prussian-dark mb-2">
         {provider_type}, #{badge_number}
@@ -53,7 +62,11 @@ function ProviderCard({
             initialValues={editedProvider}
             isEditing={isEditing}
             handleNewProvider={handleNewProvider}
-            handleUpdateProvider={handleUpdateProvider}
+            handleUpdateProvider={(updatedProvider) => {
+              handleUpdateProvider(updatedProvider);
+              setMessage("Provider has been updated.");
+              setTimeout(clearMessage, 2000);
+            }}
             provider={editedProvider}
             toggleEdit={handleToggleEdit}
           />
