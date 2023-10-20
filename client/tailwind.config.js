@@ -10,6 +10,9 @@ module.exports = {
         prussian: { light: "#005685", DEFAULT: "#003049", dark: "#002437" },
         air: { light: "#7CA9C5", DEFAULT: "#669BBC", dark: "#447A9C" },
       },
+      listStyleType: {
+        disc: "disc",
+      },
     },
   },
   plugins: [],

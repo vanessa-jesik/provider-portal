@@ -54,7 +54,7 @@ function ProvidersPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold text-center py-4 bg-prussian-dark text-white">
+      <h1 className="text-3xl font-semibold text-center py-4 bg-prussian-dark text-papaya-light">
         Providers
       </h1>
       <Suspense>
