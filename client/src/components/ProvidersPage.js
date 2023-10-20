@@ -17,25 +17,25 @@ function ProvidersPage() {
     fetchProviders().catch(console.error);
   }, []);
 
-  const handleNewProvider = (newProvider) => {
+  const handleNewProvider = newProvider => {
     setProviders([...providers, newProvider]);
     setMessage("Provider has been added.");
     setTimeout(() => setMessage(null), 2000);
   };
 
-  const handleUpdateProvider = (editedProvider) => {
-    setProviders((prevProviders) =>
-      prevProviders.map((provider) =>
+  const handleUpdateProvider = editedProvider => {
+    setProviders(prevProviders =>
+      prevProviders.map(provider =>
         provider.id === editedProvider.id ? editedProvider : provider
       )
     );
   };
 
   function handleDeleteProvider(id) {
-    fetch(`/providers/${id}`, { method: "DELETE" }).then((r) => {
+    fetch(`/providers/${id}`, { method: "DELETE" }).then(r => {
       if (r.ok) {
-        setProviders((providers) =>
-          providers.filter((provider) => provider.id !== id)
+        setProviders(providers =>
+          providers.filter(provider => provider.id !== id)
         );
         setMessage("Provider has been deleted.");
         setTimeout(() => setMessage(null), 2000);

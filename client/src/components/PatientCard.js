@@ -13,7 +13,7 @@ function PatientCard({ patient: { id, name, age, sex, address }, onDelete }) {
         to={`/patients/${id}`}
         className="bg-prussian-light text-white py-2 px-4 mr-2 rounded-lg hover:bg-air-dark"
       >
-        View Patient
+        View Incidents
       </Link>
       <span className="mt-2">
         <button
