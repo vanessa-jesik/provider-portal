@@ -17,7 +17,7 @@ function AddPatientForm({ handleAddNewPatient, setShowAddPatientForm }) {
     address: yup.string().required("Address is required"),
   });
 
-  const onSubmit = values => {
+  const onSubmit = (values) => {
     fetch("/patients", {
       method: "POST",
       headers: {
@@ -26,18 +26,18 @@ function AddPatientForm({ handleAddNewPatient, setShowAddPatientForm }) {
       },
       body: JSON.stringify(values, null, 2),
     })
-      .then(r => {
+      .then((r) => {
         if (r.status === 201) {
           return r.json();
         } else {
           throw new Error("Failed to create incident");
         }
       })
-      .then(newPatient => {
+      .then((newPatient) => {
         handleAddNewPatient(newPatient);
         setShowAddPatientForm(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error creating incident", error);
       });
   };
