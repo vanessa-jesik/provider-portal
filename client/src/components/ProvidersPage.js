@@ -5,6 +5,8 @@ import ProviderForm from "./ProviderForm";
 function ProvidersPage() {
   const [providers, setProviders] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [editedProvider, setEditedProvider] = useState({});
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -15,24 +17,28 @@ function ProvidersPage() {
     fetchProviders().catch(console.error);
   }, []);
 
-  const handleNewProvider = newProvider => {
+  const handleNewProvider = (newProvider) => {
     setProviders([...providers, newProvider]);
+    setMessage("Provider has been added.");
+    setTimeout(() => setMessage(null), 2000);
   };
 
-  const handleUpdateProvider = editedProvider => {
-    setProviders(prevProviders =>
-      prevProviders.map(provider =>
+  const handleUpdateProvider = (editedProvider) => {
+    setProviders((prevProviders) =>
+      prevProviders.map((provider) =>
         provider.id === editedProvider.id ? editedProvider : provider
       )
     );
   };
 
   function handleDeleteProvider(id) {
-    fetch(`/providers/${id}`, { method: "DELETE" }).then(r => {
+    fetch(`/providers/${id}`, { method: "DELETE" }).then((r) => {
       if (r.ok) {
-        setProviders(providers =>
-          providers.filter(provider => provider.id !== id)
+        setProviders((providers) =>
+          providers.filter((provider) => provider.id !== id)
         );
+        setMessage("Provider has been deleted.");
+        setTimeout(() => setMessage(null), 2000);
       }
     });
   }
@@ -45,6 +51,9 @@ function ProvidersPage() {
       onDelete={handleDeleteProvider}
       handleNewProvider={handleNewProvider}
       handleUpdateProvider={handleUpdateProvider}
+      editedProvider={editedProvider}
+      setEditedProvider={setEditedProvider}
+      message={provider.id === editedProvider.id ? message : null}
     />
   ));
 
@@ -57,6 +66,9 @@ function ProvidersPage() {
       <h1 className="text-3xl font-semibold text-center py-4 bg-prussian-dark text-papaya-light">
         Providers
       </h1>
+      {message && (
+        <div className="text-center text-green-600 mt-4">{message}</div>
+      )}
       <Suspense>
         <div className="text-center">
           <button

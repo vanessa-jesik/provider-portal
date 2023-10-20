@@ -69,24 +69,24 @@ const ProviderForm = ({
         provider_type: "",
       };
 
-  const updateProvider = values => {
+  const updateProvider = (values) => {
     const updatedProvider = { ...provider, ...values };
     fetch(`/providers/${provider.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProvider),
     })
-      .then(r => {
+      .then((r) => {
         if (!r.ok) {
           throw new Error(`Network response was not ok: ${r.status}`);
         }
         return r.json();
       })
-      .then(providers => {
+      .then((providers) => {
         handleUpdateProvider(updatedProvider);
         console.log("Updated provider ran");
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error updating provider:", error);
       });
   };
@@ -103,8 +103,8 @@ const ProviderForm = ({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newProvider),
     })
-      .then(r => r.json())
-      .then(providers => {
+      .then((r) => r.json())
+      .then((providers) => {
         handleNewProvider(providers);
         console.log("New provider ran");
         formikBag.resetForm();
@@ -115,11 +115,9 @@ const ProviderForm = ({
     if (isEditing) {
       updateProvider(values);
       toggleEdit();
-      alert("Provider has been updated.");
     } else {
       postProvider(values, formikBag);
       toggleForm();
-      alert("Provider has been added.");
     }
   };
 
