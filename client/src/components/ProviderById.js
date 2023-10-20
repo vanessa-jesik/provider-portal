@@ -62,20 +62,24 @@ function ProviderById() {
     <div>
       {provider ? (
         <div>
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-blue-500">
+          <div className="bg-papaya-light px-20 py-4 rounded-lg shadow-md">
+            <h1 className="text-xl font-semibold text-fire-dark">
               Selected Provider:
-            </h2>
+            </h1>
             <h3 className="text-lg font-semibold">{provider.name}</h3>
             <p className="text-gray-600">{provider.provider_type}</p>
             <p className="text-gray-600">
               Badge Number: {provider.badge_number}
             </p>
           </div>
-          <h2 className="text-lg font-semibold">Related Incidents:</h2>
+          <h2 className="text-2xl font-semibold underline text-fire-dark px-10 pt-6">
+            Related Incidents:
+          </h2>
           {provider ? (
             provider.incidents.length === 0 ? (
-              <p>Nio incidents recorded for this provder.</p>
+              <p className="px-8 py-2">
+                No incidents recorded for this provider.
+              </p>
             ) : null
           ) : null}
           <div>
@@ -97,16 +101,16 @@ function ProviderById() {
       {showAddForm ? (
         <button
           onClick={() => setShowAddForm(false)}
-          className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900"
+          className="bg-barn-light text-papaya px-4 py-2 mx-4 my-2 rounded-md hover:bg-fire-dark"
         >
-          Close form.
+          Close form
         </button>
       ) : (
         <button
           onClick={() => setShowAddForm(true)}
-          className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900"
+          className="bg-prussian-light text-papaya px-4 py-2 mx-4 mt-2 mb-28 rounded-md hover:bg-prussian"
         >
-          Add new incident for this provider:
+          Add new incident for selected provider
         </button>
       )}
 
@@ -115,6 +119,7 @@ function ProviderById() {
           provider_id={id}
           patients={patients}
           handleSubmitNewIncident={handleSubmitNewIncident}
+          setShowAddForm={setShowAddForm}
         />
       ) : null}
     </div>
