@@ -15,24 +15,27 @@ function Home() {
           <a href="/providers" className="font-bold hover:underline">
             Providers
           </a>{" "}
-          page to view all providers or create, update, or delete a provider.
+          page to view all providers and create, update, or delete a provider.
         </li>
         <li>
           Each provider has a linked page where incidents associated with that
-          provider can be viewed, created, edited, and deleted.
+          provider can be viewed, created, edited, or deleted.
         </li>
-        <li>
+        {/* <li>
           Visit the Document Incident page to report details of a recent
           incident.
-        </li>
+        </li> */}
         <li>
-          Visit the Patients page to view all patients or create or delete a
-          patient.
+          Visit the{" "}
+          <a href="/patients" className="font-bold hover:underline">
+            Patients
+          </a>{" "}
+          page to view all patients or create or delete a patient.
         </li>
-        <li>
+        {/* <li>
           Visit the Search page to sift through all providers, patients, and
           incidents by various criteria.
-        </li>
+        </li> */}
       </ul>
     </div>
   );

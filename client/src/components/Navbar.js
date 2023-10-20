@@ -35,9 +35,13 @@ function Navbar() {
         >
           PROVIDERS
         </NavLink>
-        <NavLink className="text-papaya hover:underline">
+        {/* <NavLink
+          className={`text-papaya hover:underline ${
+            location.pathname.startsWith("/document_incident") ? "bg-barn" : ""
+          }`}
+        >
           DOCUMENT INCIDENT
-        </NavLink>
+        </NavLink> */}
         <NavLink
           to="/patients"
           className={`text-papaya hover:underline ${
@@ -46,14 +50,14 @@ function Navbar() {
         >
           PATIENTS
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to="/search"
           className={`text-papaya hover:underline ${
             location.pathname === "/search" ? "bg-barn" : ""
           }`}
         >
           SEARCH
-        </NavLink>
+        </NavLink> */}
       </div>
       <img src={images["EMS.jpeg"]} alt="EMS image" className="h-16" />
     </nav>
