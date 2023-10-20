@@ -5,6 +5,7 @@ from random import randint, choice as rc
 
 # Remote library imports
 from faker import Faker
+from datetime import datetime
 
 # Local imports
 from app import app
@@ -43,6 +44,8 @@ def create_providers():
 def create_incidents(patients, providers):
     incidents = []
     for _ in range(20):
+        # fake_datetime = fake.date_time()
+        # iso8601_datetime_str = fake_datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
         i = Incident(
             date_time=fake.date_time(),
             description=fake.sentence(nb_words=10),

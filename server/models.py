@@ -4,6 +4,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import DateTime
+from dateutil.parser import isoparse
 import re
 
 from config import db
@@ -134,9 +135,9 @@ class Incident(db.Model, SerializerMixin):
     __tablename__ = "incidents"
 
     id = db.Column(db.Integer, primary_key=True)
-    date_time = db.Column(db.DateTime)
-    description = db.Column(db.String)
-    location = db.Column(db.String)
+    date_time = db.Column(db.DateTime, nullable=False)
+    description = db.Column(db.String, nullable=False)
+    location = db.Column(db.String, nullable=False)
     provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=False)
     patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"), nullable=False)
 
@@ -148,6 +149,47 @@ class Incident(db.Model, SerializerMixin):
     serialize_rules = ("-provider.incidents", "-patient.incidents")
 
     # add validation??
+    # @validates("date_time")
+    # def validate_date_time(self, key, date_time):
+    #     try:
+    #         date_time = isoparse(date_time)
+    #         return date_time
+    #     except (TypeError, ValueError):
+    #         raise ValueError("Invalid ISO 8601 datetime format")
+
+    @validates("description")
+    def validate_description(self, key, description):
+        if not description:
+            raise ValueError("Description required")
+        if not isinstance(description, str):
+            raise ValueError("Description must be a string")
+        if len(description) > 100:
+            raise ValueError("Description must be 100 or fewer characters")
+        return description
+
+    @validates("location")
+    def validate_address(self, key, location):
+        if not location:
+            raise ValueError("Location is required")
+        if not isinstance(location, str):
+            raise ValueError("Location must be a string")
+        if len(location) > 60:
+            raise ValueError("Location must be 60 or fewer characters")
+        return location
+
+    # @validates("provider_id")
+    # def validate_provider_id(self, key, provider_id):
+    #     provider = db.session.get(Provider, provider_id)
+    #     if provider:
+    #         return provider_id
+    #     return ValueError(f"Provider with id {provider_id} does not exist")
+
+    # @validates("patient_id")
+    # def validate_patient_id(self, key, patient_id):
+    #     patient = db.session.get(Patient, patient_id)
+    #     if patient:
+    #         return patient_id
+    #     return ValueError(f"Patient with id {patient_id} does not exist")
 
     def __repr__(self):
         return f"<Incident {self.date_time}, {self.description}, {self.location}>"

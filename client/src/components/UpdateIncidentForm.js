@@ -22,8 +22,14 @@ function UpdateIncidentForm({
 
   const validationSchema = yup.object().shape({
     date_time: yup.string().required("Must enter incident date and time"),
-    description: yup.string().required("Must enter a description").max(100),
-    location: yup.string().required("Must enter an address").max(60),
+    description: yup
+      .string()
+      .max(100, "Description must be 100 or fewer characters")
+      .required("Must enter a description"),
+    location: yup
+      .string()
+      .max(60, "Location must be 60 or fewer characters")
+      .required("Must enter an address"),
     patient_id: yup.number().required("Patient is required"),
   });
 
