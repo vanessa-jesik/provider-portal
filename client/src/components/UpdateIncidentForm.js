@@ -34,7 +34,7 @@ function UpdateIncidentForm({
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(values, null, 2),
+      body: JSON.stringify(values),
     })
       .then(r => {
         if (r.status === 202) {

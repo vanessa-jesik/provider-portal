@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import IncidentCard from "./IncidentCard.js";
 import AddIncidentForm from "./AddIncidentForm.js";
@@ -8,6 +9,7 @@ function ProviderById() {
   const [patients, setPatients] = useState([]);
   const { id } = useParams();
   const [showAddForm, setShowAddForm] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`http://localhost:5555/providers/${id}`)
@@ -62,6 +64,12 @@ function ProviderById() {
     <div>
       {provider ? (
         <div>
+          <button
+            onClick={() => navigate("/providers")}
+            className="bg-barn text-papaya px-4 py-2 mx-4 m-2 rounded-md hover:bg-barn-dark"
+          >
+            BACK
+          </button>
           <div className="bg-papaya-light px-20 py-4 rounded-lg shadow-md">
             <h1 className="text-xl font-semibold text-fire-dark">
               Selected Provider:

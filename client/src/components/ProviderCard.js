@@ -32,7 +32,7 @@ function ProviderCard({
           to={`/providers/${id}`}
           className="bg-prussian-light text-white py-2 px-4 mr-2 rounded-lg hover:bg-air-dark"
         >
-          View Provider
+          View Incidents
         </Link>
         <button
           onClick={handleToggleEdit}
