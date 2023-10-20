@@ -17,18 +17,22 @@ function PatientPage() {
   //   setPatients([...patients, newPatient]);
   // };
 
-  // function handleDeletePatient(id) {
-  //   fetch(`/patients/${id}`, { method: "DELETE" }).then((r) => {
-  //     if (r.ok) {
-  //       setpatients((patients) =>
-  //         patients.filter((patient) => patient.id !== id)
-  //       );
-  //     }
-  //   });
-  // }
+  function handleDeletePatient(id) {
+    fetch(`/patients/${id}`, { method: "DELETE" }).then((r) => {
+      if (r.ok) {
+        setPatients((patients) =>
+          patients.filter((patient) => patient.id !== id)
+        );
+      }
+    });
+  }
 
   let patientCards = patients.map((patient) => (
-    <PatientCard key={patient.id} patient={patient} />
+    <PatientCard
+      key={patient.id}
+      patient={patient}
+      onDelete={handleDeletePatient}
+    />
   ));
 
   return (

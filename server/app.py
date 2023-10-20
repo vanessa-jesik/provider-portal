@@ -19,7 +19,8 @@ from models import db, Provider, Patient, Incident
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
+DATABASE = os.environ.get(
+    "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE
@@ -43,7 +44,8 @@ def index():
 class Providers(Resource):
     def get(self):
         try:
-            providers = [provider.to_dict() for provider in Provider.query.all()]
+            providers = [provider.to_dict()
+                         for provider in Provider.query.all()]
             return make_response(providers, 200)
         except Exception as e:
             return make_response({"error": str(e)}, 500)
@@ -107,11 +109,33 @@ class Patients(Resource):
         )
 
 
+class PatientsById(Resource):
+    def get(self, id):
+        patient = db.session.get(Patient, id)
+        if patient:
+            return make_response(
+                patient.to_dict(rules=("incidents", "-incidents.patient")),
+                200
+            )
+        return make_response({"error": "Patient not found"}, 404)
+
+    def delete(self, id):
+        patient = db.session.get(Patient, id)
+
+        if patient:
+            db.session.delete(patient)
+            db.session.commit()
+            return "", 204
+
+        return make_response({"error": "patient not found"}, 404)
+
+
 class Incidents(Resource):
     def post(self):
         incident_json = request.get_json()
         date_time_str = incident_json["date_time"]
-        date_time = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S")
+        date_time = datetime.datetime.strptime(
+            date_time_str, "%Y-%m-%d %H:%M:%S")
         incident_json["date_time"] = date_time
         incident = Incident()
         try:
@@ -130,7 +154,8 @@ class IncidentById(Resource):
         incident = db.session.get(Incident, id)
         incident_json = request.get_json()
         date_time_str = incident_json["date_time"]
-        date_time = datetime.datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S")
+        date_time = datetime.datetime.strptime(
+            date_time_str, "%Y-%m-%d %H:%M:%S")
         incident_json["date_time"] = date_time
         if incident:
             try:
@@ -155,6 +180,7 @@ class IncidentById(Resource):
 api.add_resource(Providers, "/providers")
 api.add_resource(ProviderById, "/providers/<int:id>")
 api.add_resource(Patients, "/patients")
+api.add_resource(PatientsById, "/patients/<int:id>")
 api.add_resource(Incidents, "/incidents")
 api.add_resource(IncidentById, "/incidents/<int:id>")
 

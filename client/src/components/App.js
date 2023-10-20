@@ -5,6 +5,7 @@ import Navbar from "./Navbar.js";
 import ProviderPage from "./ProviderPage.js";
 import ProviderById from "./ProviderById.js";
 import PatientPage from "./PatientPage.js";
+import PatientById from "./PatientById.js";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/providers" element={<ProviderPage />} />
           <Route path="/providers/:id" element={<ProviderById />} />
+          <Route path="/patients/:id" element={<PatientById />} />
           <Route path="/patients" element={<PatientPage />} />
         </Routes>
       </main>
