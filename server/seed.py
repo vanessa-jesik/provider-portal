@@ -34,7 +34,7 @@ def create_providers():
             provider_type=fake.random_element(
                 elements=("Paramedic", "Fire Fighter", "EMT", "Nurse")
             ),
-            badge_number=randint(10000, 99999),
+            badge_number=str(randint(10000, 99999)),
         )
         providers.append(p)
     return providers

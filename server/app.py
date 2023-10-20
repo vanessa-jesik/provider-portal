@@ -107,6 +107,19 @@ class Patients(Resource):
             [patient.to_dict() for patient in Patient.query.all()], 200
         )
 
+    def post(self):
+        patient = Patient()
+        patient_json = request.get_json()
+        try:
+            for key in patient_json:
+                if hasattr(patient, key):
+                    setattr(patient, key, patient_json[key])
+            db.session.add(patient)
+            db.session.commit()
+            return make_response(patient.to_dict(), 201)
+        except ValueError as e:
+            return make_response({"error": e.__str__()}, 422)
+
 
 class Incidents(Resource):
     def post(self):

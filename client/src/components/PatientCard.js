@@ -6,8 +6,9 @@ function PatientCard({ patient: { id, name, age, sex, address }, onDelete }) {
     <div className="bg-white rounded-lg p-4 shadow-md">
       <h3 className="text-xl font-semibold mb-2">{name}</h3>
       <p className="text-gray-600 mb-2">
-        {name} {age} {sex} {address}
+        {name} {age}yo {sex}
       </p>
+      <p className="text-gray-600 mb-2">{address}</p>
       <Link
         to={`/patients/${id}`}
         className="bg-prussian-light text-white py-2 px-4 mr-2 rounded-lg hover:bg-air-dark"
