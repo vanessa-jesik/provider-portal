@@ -1,9 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
-function AddIncidentForm({ provider_id, patients, handleSubmitNewIncident }) {
+function AddIncidentForm({
+  provider_id,
+  patients,
+  handleSubmitNewIncident,
+  setShowAddForm,
+}) {
+  const navigate = useNavigate();
   const initialValues = {
     date_time: "",
     description: "",
@@ -19,7 +26,7 @@ function AddIncidentForm({ provider_id, patients, handleSubmitNewIncident }) {
     patient_id: yup.number().required("Patient is required"),
   });
 
-  const onSubmit = (values, formikBag) => {
+  const onSubmit = values => {
     fetch("/incidents", {
       method: "POST",
       headers: {
@@ -37,7 +44,7 @@ function AddIncidentForm({ provider_id, patients, handleSubmitNewIncident }) {
       })
       .then(newIncident => {
         handleSubmitNewIncident(newIncident);
-        formikBag.resetForm();
+        setShowAddForm(false);
       })
       .catch(error => {
         console.error("Error creating incident", error);
@@ -49,7 +56,7 @@ function AddIncidentForm({ provider_id, patients, handleSubmitNewIncident }) {
   return (
     <div>
       <h2 className="text-xl font-bold px-4 py-2">New incident details:</h2>
-      <form onSubmit={formik.handleSubmit} className="m-4">
+      <form onSubmit={formik.handleSubmit} className="mx-4 mb-28">
         <div className="m-2">
           <label htmlFor="date_time" className="font-semibold">
             Incident date and time:
@@ -61,6 +68,7 @@ function AddIncidentForm({ provider_id, patients, handleSubmitNewIncident }) {
             format="YYYY-MM-DD HH:mm:ss"
             onChange={date => formik.setFieldValue("date_time", date)}
             value={formik.values.date_time}
+            className="w-1/4"
           />
           <p className="text-fire-light"> {formik.errors.date_time}</p>
         </div>
@@ -122,6 +130,14 @@ function AddIncidentForm({ provider_id, patients, handleSubmitNewIncident }) {
           className="bg-papaya text-fire px-4 py-2 mx-4 my-2 border-solid border-2 border-papaya-dark rounded-md hover:bg-papaya-dark"
         >
           Submit
+        </button>
+        <p className="inline">If the patient is not yet in the system:</p>
+        <button
+          type="button"
+          onClick={() => navigate("/patients")}
+          className="bg-prussian-light text-papaya px-4 py-2 mx-4 mt-2 mb-28 rounded-md hover:bg-prussian"
+        >
+          ADD A NEW PATIENT HERE
         </button>
       </form>
     </div>

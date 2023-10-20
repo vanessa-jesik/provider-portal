@@ -108,7 +108,7 @@ function ProviderById() {
       ) : (
         <button
           onClick={() => setShowAddForm(true)}
-          className="bg-prussian-light text-papaya px-4 py-2 mx-4 my-2 rounded-md hover:bg-prussian"
+          className="bg-prussian-light text-papaya px-4 py-2 mx-4 mt-2 mb-28 rounded-md hover:bg-prussian"
         >
           Add new incident for selected provider
         </button>
@@ -119,6 +119,7 @@ function ProviderById() {
           provider_id={id}
           patients={patients}
           handleSubmitNewIncident={handleSubmitNewIncident}
+          setShowAddForm={setShowAddForm}
         />
       ) : null}
     </div>

@@ -2,7 +2,7 @@ import React, { Suspense, useState, useEffect } from "react";
 import ProviderCard from "./ProviderCard";
 import ProviderForm from "./ProviderForm";
 
-function ProviderPage() {
+function ProvidersPage() {
   const [providers, setProviders] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -15,23 +15,23 @@ function ProviderPage() {
     fetchProviders().catch(console.error);
   }, []);
 
-  const handleNewProvider = (newProvider) => {
+  const handleNewProvider = newProvider => {
     setProviders([...providers, newProvider]);
   };
 
-  const handleUpdateProvider = (editedProvider) => {
-    setProviders((prevProviders) =>
-      prevProviders.map((provider) =>
+  const handleUpdateProvider = editedProvider => {
+    setProviders(prevProviders =>
+      prevProviders.map(provider =>
         provider.id === editedProvider.id ? editedProvider : provider
       )
     );
   };
 
   function handleDeleteProvider(id) {
-    fetch(`/providers/${id}`, { method: "DELETE" }).then((r) => {
+    fetch(`/providers/${id}`, { method: "DELETE" }).then(r => {
       if (r.ok) {
-        setProviders((providers) =>
-          providers.filter((provider) => provider.id !== id)
+        setProviders(providers =>
+          providers.filter(provider => provider.id !== id)
         );
       }
     });
@@ -85,4 +85,4 @@ function ProviderPage() {
     </div>
   );
 }
-export default ProviderPage;
+export default ProvidersPage;
